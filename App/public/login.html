@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8" />
+	<title>Video Search</title>
+</head>
+<body>
+	<div class="title">
+		<h1>WELCOME</h1>
+	  </div>
+	
+	  <form #user="ngForm" (ngSubmit)="onSubmit(user, $event)" class="login-form">
+		<input type="email" name="email" placeholder="Email" required ngModel/>
+		<input type="password" name="password" placeholder="Password" required ngModel/>
+	
+		<input type="submit" name="login" value="Log in" class="button_group" >
+	
+		<p>Have an account?
+		  <a [routerLink]="['/register']">Register</a>
+		</p>
+	  </form>
+	
+</body>
+</html>
