@@ -1,30 +1,44 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" ng-app="videoApp">
 
 <head>
 	<meta charset="utf-8" />
 	<title>Video Search</title>
-	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<!-- <link rel="stylesheet" type="text/css" href="./css/style.css"> -->
+	<script src="https://code.angularjs.org/1.6.1/angular.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-cookies.js"></script>
+	<script type="text/javascript" src="js/angular-ui-router.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+
+
+	<script type="text/javascript" src="js/routing.js"></script>
+
+	<!-- login -->
+	<script src="js/Controllers/userCtrl.js"></script>
+	<script src="js/Services/userService.js"></script>
+	<link rel="stylesheet" type="text/css" href="login/login.css">
+
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body>
-	<div class="title">
-		<h1>WELCOME</h1>
+	<div class="sidenav">
+		<ul>
+			<li>
+				<a href="#">Home</a>
+			</li>
+			<li>
+				<a ui-sref="login" ui-sref-active="active">Login</a>
+			</li>
+			<li>
+				<a href="#">Contact</a>
+			</li>
+		</ul>
 	</div>
 
-	<form #user="ngForm" (ngSubmit)="onSubmit(user, $event)" class="login-form">
-		<input type="email" name="email" placeholder="Email" required ngModel />
-		<input type="password" name="password" placeholder="Password" required ngModel />
-
-		<input type="submit" name="login" value="Log in" class="button_group">
-
-
-
-		<a href="">New User ? </a>
-		<br>
-
-		<a href="">Forgot password ?</a>
-	</form>
+	<div class="main">
+		<ui-view></ui-view>
+	</div>
 
 </body>
 
