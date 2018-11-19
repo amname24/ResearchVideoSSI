@@ -1,4 +1,4 @@
-myApp.directive("equalsTo",function(){
+videoApp.directive("equalsTo",function(){
     return{
         require : "ngModel",
         restrict: 'A', // S'utilise uniquement en tant qu'attribut
@@ -18,7 +18,7 @@ myApp.directive("equalsTo",function(){
           }
     }
 })
-myApp.directive("checkLength",function(){
+videoApp.directive("checkLength",function(){
   return {
     replace: false,
     restrict: 'A',
@@ -35,7 +35,7 @@ myApp.directive("checkLength",function(){
   }
 })
 
-myApp.directive("checkSymbols",function(){
+videoApp.directive("checkSymbols",function(){
   return {
     replace: false,
     restrict: 'A',
@@ -53,7 +53,7 @@ myApp.directive("checkSymbols",function(){
     }
   }
 })
-myApp.directive("checkLowerletters",function(){
+videoApp.directive("checkLowerletters",function(){
   return {
     replace: false,
     restrict: 'A',
@@ -70,7 +70,7 @@ myApp.directive("checkLowerletters",function(){
     }
   }
 })
-myApp.directive("checkUpperletters",function(){
+videoApp.directive("checkUpperletters",function(){
   return {
     replace: false,
     restrict: 'A',
@@ -87,7 +87,7 @@ myApp.directive("checkUpperletters",function(){
     }
   }
 })
-myApp.directive("checkNumbers",function(){
+videoApp.directive("checkNumbers",function(){
   return {
     replace: false,
     restrict: 'A',
@@ -104,7 +104,7 @@ myApp.directive("checkNumbers",function(){
     }
   }
 })
-// myApp.directive("checkStrength",function(){
+// videoApp.directive("checkStrength",function(){
 //   return {
 //     replace: false,
 //     restrict: 'A',

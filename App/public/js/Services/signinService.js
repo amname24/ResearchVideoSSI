@@ -1,4 +1,4 @@
-myApp.factory('signinService',['$http',function($http){
+videoApp.factory('signinService',['$http',function($http){
     var serv = {};
 
     serv.add = function(Name,Email,Password,cb){

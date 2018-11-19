@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost/videoresearch', function (err) {
 
 var AccountSchema = Schema({
     _id: String,
-    username: String,
+    name: String,
     email: String,
     password: String
 });
@@ -47,6 +47,22 @@ module.exports = {
             }
         })
     },
+    ajouterCompte : function(compte, cb){
+        var nouveau = new  AccountModel({
+            _id : compte._id,
+            name : compte.name,
+            email : compte.email,
+            password : compte.password
+        });
+        nouveau.save(function(err){
+            if(err){
+                console.log("problème creation compte BD ");
+                throw err;
+            } else{
+                cb();
+            }
+        });
+    }
 
 
 };

@@ -1,6 +1,6 @@
 
 
-myApp.controller('signinController',['signinService','$scope','$window',function(signinService,$scope,$window){
+videoApp.controller('signinController',['signinService','$scope','$window',function(signinService,$scope,$window){
     $scope.creer = function(){
         signinService.add($scope.Name,$scope.Email,$scope.Password, function(resp){
                 if(resp)

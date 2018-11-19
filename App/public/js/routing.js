@@ -4,7 +4,7 @@ videoApp.config(function ($stateProvider) {
     var homeState = {
         name: "home",
         url: "/",
-        templateUrl: "index.html",
+        templateUrl: "home/home.html",
         // controller: "mainCtrl"
     };
     var loginState = {
@@ -13,9 +13,16 @@ videoApp.config(function ($stateProvider) {
         templateUrl: "login/login.html",
         controller: "userCtrl"
     };
+    var signinState = {
+        name: "signin",
+        url: "/signin",
+        templateUrl: "signin/signin.html",
+        controller: "signinController"
+    };
     
     $stateProvider.state(homeState);
     $stateProvider.state(loginState);
+    $stateProvider.state(signinState);
 });
 
 angular.module('videoApp').run(['$cookies', '$location', function ($cookies,$location) {
