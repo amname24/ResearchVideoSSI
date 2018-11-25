@@ -4,7 +4,7 @@ videoApp.config(function ($stateProvider) {
     var homeState = {
         name: "home",
         url: "/",
-        templateUrl: "view/home/home.html",
+        templateUrl: "index.html",
         // controller: "mainCtrl"
     };
     var loginState = {
