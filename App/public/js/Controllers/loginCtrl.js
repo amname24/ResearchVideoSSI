@@ -1,13 +1,9 @@
 // var loginPage = angular.module("loginPage", [])
 
-videoApp.controller('userCtrl', ['userService', '$scope', '$state','$cookies',function (userService, $scope, $state, $cookies) {
-    $scope.load = function () {
-
-    };
-
+videoApp.controller('loginCtrl', ['loginService', '$scope', '$state','$cookies',function (loginService, $scope, $state, $cookies) {
 
     $scope.login = function () {
-        userService.login($scope.email, $scope.password, function (res) {
+        loginService.login($scope.email, $scope.password, function (res) {
             if (res.data.success) {
                 username = res.data.username;
                 var token = res.data.token;
@@ -20,5 +16,4 @@ videoApp.controller('userCtrl', ['userService', '$scope', '$state','$cookies',fu
         })
     };
 
-    $scope.load();
 }])

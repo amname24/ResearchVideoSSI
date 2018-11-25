@@ -4,20 +4,20 @@ videoApp.config(function ($stateProvider) {
     var homeState = {
         name: "home",
         url: "/",
-        templateUrl: "home/home.html",
+        templateUrl: "view/home/home.html",
         // controller: "mainCtrl"
     };
     var loginState = {
         name: "login",
         url: "/login",
-        templateUrl: "login/login.html",
-        controller: "userCtrl"
+        templateUrl: "view/login/login.html",
+        controller: "loginCtrl"
     };
     var signinState = {
-        name: "signin",
-        url: "/signin",
-        templateUrl: "signin/signin.html",
-        controller: "signinController"
+        name: "signup",
+        url: "/signup",
+        templateUrl: "view/signup/signup.html",
+        controller: "signupCtrl"
     };
     
     $stateProvider.state(homeState);

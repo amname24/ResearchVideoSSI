@@ -47,7 +47,8 @@ module.exports = {
             }
         })
     },
-    ajouterCompte : function(compte, cb){
+    signup : function(compte, cb){
+        console.log(compte);
         var nouveau = new  AccountModel({
             _id : compte._id,
             name : compte.name,

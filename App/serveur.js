@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname,'public')));
 
-app.post('/addCompte',function(req,res){
+app.post('/signup',function(req,res){
   if(!req.body.name || !req.body.email || !req.body.password){
       res.send(
           {
@@ -36,7 +36,7 @@ app.post('/addCompte',function(req,res){
           email : req.body.email,
           password : req.body.password
       };
-      userRepository.ajouterCompte(compte,function(){
+      userRepository.signup(compte,function(){
           res.send({success : true,compte : compte});
       });
   };

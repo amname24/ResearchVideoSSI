@@ -1,8 +1,8 @@
-<body ng-controller="signinController">
+<body ng-controller="signupCtrl">
         <div>
-            <form class="form-horizontal" name="registerForm" ng-submit ="creer()">
+            <form class="form-horizontal" name="registerForm" ng-submit ="register()">
                     <div class="form-group" ng-class="{'has-error': registerForm.$dirty}">
-                            <label class="col-sm-3 control-label" for="Name">Name</label>
+                            <label class="col-sm-3 control-label " for="Name">Name</label>
                             <div class="col-sm-9">
                                 <input id="Name" type="name" class="form-control" required name="Name" ng-model="Name" />
                             </div>
