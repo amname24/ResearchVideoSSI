@@ -36,8 +36,17 @@ app.post('/signup',function(req,res){
           email : req.body.email,
           password : req.body.password
       };
-      userRepository.signup(compte,function(){
-          res.send({success : true,compte : compte});
+      userRepository.signup(compte,function(user, newUser){
+        if(newUser)
+        {
+          res.send({success : true,compte : user});
+          console.log("new User created :"+user);
+        }
+        else 
+        {
+          res.send({success : false});
+          console.log("No user created : user exist ");
+        }
       });
   };
 });

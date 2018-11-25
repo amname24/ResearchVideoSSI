@@ -48,21 +48,33 @@ module.exports = {
         })
     },
     signup : function(compte, cb){
-        console.log(compte);
-        var nouveau = new  AccountModel({
-            _id : compte._id,
-            name : compte.name,
-            email : compte.email,
-            password : compte.password
-        });
-        nouveau.save(function(err){
-            if(err){
-                console.log("problème creation compte BD ");
-                throw err;
-            } else{
-                cb();
+        AccountModel.count({
+            email: compte.email,
+        }, function (err, count) {
+            if (err) {    
+                console.error();
+            } else if (count == 0) {
+                console.log("this mail was not used before to register "+compte.email)            
+                var nouveau = new  AccountModel({
+                    _id : compte._id,
+                    name : compte.name,
+                    email : compte.email,
+                    password : compte.password
+                });
+                nouveau.save(function(err,resp){
+                    if(err){
+                        console.log("problème creation acount in the BD ");
+                        console.error();
+                    } else{
+                        console.log("a new acount is created in the BD ");
+                        cb(resp,true);
+                    }
+                });
+            } else {
+                console.log("this mail was used before to register "+compte.email)      
+                cb(count, false);
             }
-        });
+        })
     }
 
 
