@@ -13,9 +13,29 @@ videoApp.config(function ($stateProvider) {
         templateUrl: "login/login.html",
         controller: "userCtrl"
     };
-    
+    var registerState = {
+        name: "register",
+        url: "/register",
+        template: "register page",
+        controller: "",
+    };
+    var fogetPassword = {
+        name: "fogetPassword",
+        url: "/forgetPassword",
+        template: "forget password page",
+        controller: "",
+    };
+    var searchPageState = {
+        name: "searchPage",
+        url: "/search",
+        templateUrl: "search/search.html",
+        controller: "searchCtrl"
+    };
     $stateProvider.state(homeState);
     $stateProvider.state(loginState);
+    $stateProvider.state(registerState);
+    $stateProvider.state(fogetPassword);
+    $stateProvider.state(searchPageState);
 });
 
 angular.module('videoApp').run(['$cookies', '$location', function ($cookies,$location) {

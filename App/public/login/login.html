@@ -1,25 +1,11 @@
-<!DOCTYPE html>
-<html lang="fr" ng-app="loginPage">
+<div ng-controller="userCtrl">
+	<form class="login-form">
+		<input type="email" name="email" placeholder="Email" class="form-control" required ng-model="email" />
+		<input type="password" name="password" placeholder="Password" class="form-control" required ng-model="password" />
 
-<head>
-	<meta charset="utf-8" />
-	<title>Video Search</title>
-</head>
-
-<body>
-	<div ng-controller="userCtrl">
-		<form class="login-form">
-			<input type="email" name="email" placeholder="Email" class="form-control" required ng-model="email" />
-			<input type="password" name="password" placeholder="Password" class="form-control" required ng-model="password" />
-
-			<input type="submit" name="login" value="Log in" class="button_group" ng-click="login()">
-			<a ng-click="signup()">New User ? </a>
-			<br>
-			<a ui-sref="">Forgot password ?</a>
-		</form>
-	</div>
-
-
-</body>
-
-</html>
+		<input type="submit" name="login" value="Log in" class="button_group" ng-click="login()">
+		<a ui-sref="register">New User ? </a>
+		<br>
+		<a ui-sref="resetPassword">Forgot password ?</a>
+	</form>
+</div>

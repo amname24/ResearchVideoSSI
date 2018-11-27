@@ -1,9 +1,4 @@
-body {
-    
-    background-repeat: no-repeat;
-    /* background-size: cover; */
-    background-position: center;
-}
+
 
 .title {
     margin-top: 10%;
@@ -28,16 +23,17 @@ body {
 .login-form {
     text-align: center;
     width: 360px;
-    margin-left: calc(50% - 180px);
+    margin-left: calc(50% - 80px);
+    margin-top: 200px;
 
 }
-
+/* 
 .login-form>p,
 a {
     color: #fff;
     font-weight: 300;
     font-size: 20px;
-}
+} */
 
 .login-form>input::placeholder {
     color: #fff;
@@ -69,5 +65,5 @@ a {
     margin-left: calc(50% - 180px);
     margin-bottom: 20px;
     padding: 10px 130px;
-    border: 2px solid rgba(29, 43, 102, 0.7);
+    /* border: 2px solid rgba(29, 43, 102, 0.7); */
 }
