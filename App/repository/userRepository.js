@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost/videoresearch', function (err) {
 
 var AccountSchema = Schema({
     _id: String,
-    username: String,
+    name: String,
     email: String,
     password: String
 });
@@ -47,6 +47,35 @@ module.exports = {
             }
         })
     },
+    signup : function(compte, cb){
+        AccountModel.count({
+            email: compte.email,
+        }, function (err, count) {
+            if (err) {    
+                console.error();
+            } else if (count == 0) {
+                console.log("this mail was not used before to register "+compte.email)            
+                var nouveau = new  AccountModel({
+                    _id : compte._id,
+                    name : compte.name,
+                    email : compte.email,
+                    password : compte.password
+                });
+                nouveau.save(function(err,resp){
+                    if(err){
+                        console.log("problème creation acount in the BD ");
+                        console.error();
+                    } else{
+                        console.log("a new acount is created in the BD ");
+                        cb(resp,true);
+                    }
+                });
+            } else {
+                console.log("this mail was used before to register "+compte.email)      
+                cb(count, false);
+            }
+        })
+    }
 
 
 };

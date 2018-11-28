@@ -1,0 +1,42 @@
+.search-bar {
+    background-color: #222;
+}
+
+.search-bar * {
+    color: white !important;
+}
+
+.search-bar input {
+    border-bottom-color: white;
+}
+
+.md-errors-spacer {
+    display: none;
+}
+a:link {text-decoration:none;}
+
+
+.search-result-img {
+    width: 100px;
+    height: 100px;
+    /* border-radius: 50%; */
+    float: left;
+    border: 2px solid #161f42;
+}
+
+.caption{
+    padding: 10px;
+}
+.col-md-4{
+    width:30%;
+    height: 350px;
+    float:left;
+    padding-left:15px;
+    padding-right:15px;
+}
+.search-panel{
+    position: relative;
+    top: 0;
+    display: inline-block;
+    padding: 3px;
+}

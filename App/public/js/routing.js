@@ -1,4 +1,4 @@
-var videoApp = angular.module('videoApp',  ['ngCookies','ui.router']);
+var videoApp = angular.module('videoApp',  ['ngCookies','ui.router','ngYoutubeEmbed']);
 
 videoApp.config(function ($stateProvider) {
     var homeState = {
@@ -10,15 +10,16 @@ videoApp.config(function ($stateProvider) {
     var loginState = {
         name: "login",
         url: "/login",
-        templateUrl: "login/login.html",
-        controller: "userCtrl"
+        templateUrl: "view/login/login.html",
+        controller: "loginCtrl"
     };
-    var registerState = {
-        name: "register",
-        url: "/register",
-        template: "register page",
-        controller: "",
+    var signinState = {
+        name: "signup",
+        url: "/signup",
+        templateUrl: "view/signup/signup.html",
+        controller: "signupCtrl"
     };
+   
     var fogetPassword = {
         name: "fogetPassword",
         url: "/forgetPassword",
@@ -28,22 +29,22 @@ videoApp.config(function ($stateProvider) {
     var searchPageState = {
         name: "searchPage",
         url: "/search",
-        templateUrl: "search/search.html",
+        templateUrl: "view/search/search.html",
         controller: "searchCtrl"
     };
     $stateProvider.state(homeState);
     $stateProvider.state(loginState);
-    $stateProvider.state(registerState);
     $stateProvider.state(fogetPassword);
     $stateProvider.state(searchPageState);
+    $stateProvider.state(signinState);
 });
 
-angular.module('videoApp').run(['$cookies', '$location', function ($cookies,$location) {
+// angular.module('videoApp').run(['$cookies', '$location', function ($cookies,$location) {
     
-    if(!$cookies.get('token')){
-        $location.path('/login');
-        var logged = false
-    }
-    else  
-        $location.path('/');
-  }]);
+//     if(!$cookies.get('token')){
+//         $location.path('/login');
+//         var logged = false
+//     }
+//     // else  
+//         // $location.path('/');
+//   }]);
