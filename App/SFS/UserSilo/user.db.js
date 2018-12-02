@@ -30,26 +30,17 @@ var AccountModel = mongoose.model('accounts', AccountSchema);
 module.exports = {
 
     login: function (req, cb) {
-        console.log(req)
         var email = req.email;
         var password = req.password;
         var lastLogin = (new Date()).toISOString();
-
-        if (email == null || password == null)
-            console.log('null data');
-
-
         AccountModel.findOne({
             email: email,
             password: password
         }, function (err, user) {
             if (err) {                
                 cb(user, false);
-            } else if (user != null) {
-                log.print(user);
-                
+            } else if (user != null) {                
                  cb(user, true);
-                
             } else {
                 cb(user, false);
             }

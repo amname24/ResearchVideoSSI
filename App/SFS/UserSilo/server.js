@@ -46,20 +46,20 @@ app.post('/register',function(req,res){
 });
 
 app.post('/login', function (req, res) {
-    console.log(req.body.email)
     var user = {
       email: req.body.email,
       password: req.body.password
     }
     userRepository.login(user, function (user, isFound) {
       if (isFound) {
+        console.log("user is found ");
         res.send({
-          success: isFound,
-          username: user.username,
+          success: true,
+          user: user
         });
       } else
         res.send({
-          success: isFound
+          success: false
         })
     })
   })

@@ -8,7 +8,7 @@ videoApp.factory('loginService', ['$http', function ($http) {
             password: password
         };
         console.log(user);
-        $http.post('/login', user).then(function(res){
+        $http.post('/user/login', user).then(function(res){
             cb(res) 
         }).e
     }
