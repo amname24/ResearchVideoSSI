@@ -7,7 +7,7 @@ videoApp.factory('signupService', ['$http', function ($http) {
             email : Email ,
             password : Password,
         }
-        $http.post('/signup',req).then(function(resp){
+        $http.post('user/register',req).then(function(resp){
             cb(resp.data.success);
         });
     }

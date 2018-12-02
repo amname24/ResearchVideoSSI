@@ -17,7 +17,11 @@ var AccountSchema = Schema({
     _id: String,
     name: String,
     email: String,
-    password: String
+    password: String,
+    last_login : String,
+    role_id: String,
+    created_at : String, 
+    status: String 
 });
 
 var AccountModel = mongoose.model('accounts', AccountSchema);
@@ -29,6 +33,7 @@ module.exports = {
         console.log(req)
         var email = req.email;
         var password = req.password;
+        var lastLogin = (new Date()).toISOString();
 
         if (email == null || password == null)
             console.log('null data');
@@ -41,13 +46,17 @@ module.exports = {
             if (err) {                
                 cb(user, false);
             } else if (user != null) {
-                cb(user, true);
+                log.print(user);
+                
+                 cb(user, true);
+                
             } else {
                 cb(user, false);
             }
         })
     },
     signup : function(compte, cb){
+        var lastLogin = (new Date()).toISOString();
         AccountModel.count({
             email: compte.email,
         }, function (err, count) {
@@ -59,7 +68,11 @@ module.exports = {
                     _id : compte._id,
                     name : compte.name,
                     email : compte.email,
-                    password : compte.password
+                    password : compte.password,
+                    last_login: lastLogin,
+                    status : 'active',
+                    role_id: 'user',
+                    created_at : lastLogin
                 });
                 nouveau.save(function(err,resp){
                     if(err){

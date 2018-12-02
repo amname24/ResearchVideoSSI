@@ -1,0 +1,23 @@
+{
+  "name": "business",
+  "version": "1.0.0",
+  "description": "",
+  "main": "serveur.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "amna",
+  "license": "ISC",
+  "dependencies": {
+    "npm": "^6.4.1",
+    "express":"^4.16.4",
+    "https":"^1.0.0",
+    "body-parser":"^1.18.3",
+    "uuid":"^3.3.2",
+    "axios":"^0.18.0",
+    "fs":"^0.0.1-security",
+    "jsonwebtoken":"^8.4.0",
+    "cookies":"^0.7.3",
+    "js-yaml":"^3.12.0"
+  }
+}
