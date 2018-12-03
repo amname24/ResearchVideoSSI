@@ -1,33 +1,46 @@
-
-videoApp.controller('searchCtrl', ['$http','$scope', function($http, $scope) {
+videoApp.controller('searchCtrl', ['videoService', '$http', '$scope', '$location', '$rootScope', function (videoService, $http, $scope, $location, $rootScope) {
+ 
     videos = [];
-    // $scope.search = function () {
-    //     var searchInput = $scope.searchInput;
-    //     console.log(searchInput);
-        
-    //     if (!searchInput){
-    //         $scope.video = [];
-    //         return;
-    //     }
-    //     $http.get("https://www.googleapis.com/youtube/v3/search?part=snippet&order=relevance&maxResults=10&q=" + searchInput + "&type=video&key=AIzaSyA670YSi6pImC-35QYETHPxp_rHItuNCvc", { cache: true }).then(function(res){
-    //     console.log(res);
-    //     $scope.videos = res.data.items;
-        
-    //     })  
-    // }
-
-    $scope.search = function(){
-        var searchInput = $scope.searchInput;
+    var location = $location
+    var searchInput
+    var site
+    $scope.load = function () {
+        window.location.href= $rootScope.url
+        searchInput = $location.search().input
+        site = $location.search().site
         console.log(searchInput);
-        
-        if (!searchInput){
+
+        if (!searchInput) {
             $scope.video = [];
             return;
         }
-        $http.get("https://api.vimeo.com/videos?query="+searchInput+"&access_token=d3266a4b836cde5f096ae6abe8de8c79", { cache: true }).then(function(res){
-        console.log(res);
-        $scope.videos = res.data.data;
-        
-        })  
+        videoService.search(searchInput, site, function (res) {
+            if (res.success) {
+
+                $scope.videos = res.data
+                console.log(res.data);
+
+            }
+        })
+
     }
+    $scope.playVideo = function (video) {
+        window.location.href = "https://localhost:8090/#!/player?site=" + video.site + "&videoId=" + video.videoId
+        // document.getElementById('resultContent').innerHTML = "aaa"
+        // var ifrm = document.createElement("iframe");
+        // ifrm.setAttribute("src", embedUrl + videoId);
+        // ifrm.style.width = "640px";
+        // ifrm.style.height = "480px";
+        // var wrap = document.createElement('div');
+        // wrap.appendChild(ifrm.cloneNode(true));
+        // console.log('iframe', wrap.outerHTML);
+
+        // document.getElementById('resultContent').innerHTML=wrap.outerHTML
+    }
+    $scope.$watch(function( $rootScope){
+        $rootScope.url
+    },function(){
+        console.log('watch')
+    $scope.load()
+      });
 }]);

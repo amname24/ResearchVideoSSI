@@ -1,6 +1,6 @@
 .sidenav{
     height: 100%;
-    width: 200px;
+    width: 18%;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -23,7 +23,9 @@
 }
 
 .main {
-    margin-left: 200px; /* Same as the width of the sidenav */
+    position: absolute;
+    margin-left: 18%; 
+    /* width: calc(100% -200px); */
 }
 
 @media screen and (max-height: 450px) {

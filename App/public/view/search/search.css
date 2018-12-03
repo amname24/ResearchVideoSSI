@@ -1,19 +1,7 @@
-.search-bar {
-    background-color: #222;
+.navbar-form {
+    margin-left: 18%;
+    position: relative;
 }
-
-.search-bar * {
-    color: white !important;
-}
-
-.search-bar input {
-    border-bottom-color: white;
-}
-
-.md-errors-spacer {
-    display: none;
-}
-a:link {text-decoration:none;}
 
 
 .search-result-img {
@@ -25,11 +13,13 @@ a:link {text-decoration:none;}
 }
 
 .caption{
-    padding: 10px;
+    padding: 5px;
 }
 .col-md-4{
     width:30%;
-    height: 350px;
+    height: auto;
+    /* margin-left: 200px;
+    position: relative; */
     float:left;
     padding-left:15px;
     padding-right:15px;
@@ -39,4 +29,8 @@ a:link {text-decoration:none;}
     top: 0;
     display: inline-block;
     padding: 3px;
+}
+.search-result{
+    margin-left: 150px;
+    position: relative;
 }

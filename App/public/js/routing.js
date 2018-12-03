@@ -1,11 +1,10 @@
-var videoApp = angular.module('videoApp',  ['ngCookies','ui.router','ngYoutubeEmbed']);
 
 videoApp.config(function ($stateProvider) {
     var homeState = {
         name: "home",
         url: "/",
         templateUrl: "index.html",
-        // controller: "mainCtrl"
+        controller: "indexCtrl"
     };
     var loginState = {
         name: "login",
@@ -28,15 +27,22 @@ videoApp.config(function ($stateProvider) {
     };
     var searchPageState = {
         name: "searchPage",
-        url: "/search",
+        url: "/search:site&:input",
         templateUrl: "view/search/search.html",
-        controller: "searchCtrl"
+        controller: "searchCtrl",
     };
+    var videoPlayerState = {
+        name :"videoPlayer",
+        url: "/player",
+        templateUrl: "view/search/player.html",
+        controller: "videoPlayerCtrl"
+    }
     $stateProvider.state(homeState);
     $stateProvider.state(loginState);
     $stateProvider.state(fogetPassword);
     $stateProvider.state(searchPageState);
     $stateProvider.state(signinState);
+    $stateProvider.state(videoPlayerState);
 });
 
 // angular.module('videoApp').run(['$cookies', '$location', function ($cookies,$location) {

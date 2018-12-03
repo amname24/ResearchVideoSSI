@@ -2,9 +2,10 @@ var path = require('path');
 
 
 const https = require("https"),
-fs = require("fs");
+  fs = require("fs");
 
-
+const http = require("http")
+const request = require("request")
 const options = {
   key: fs.readFileSync("D:/AMU/Semestre 9/Securite avancee/ResearchVideoSSI/SSL/research.com.key", 'utf8'),
   cert: fs.readFileSync("D:/AMU/Semestre 9/Securite avancee/ResearchVideoSSI/SSL/research.com.crt", 'utf8'),
@@ -19,35 +20,38 @@ var userRepository = require('./repository/userRepository.js');
 
 var app = express();
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname,'public')));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/signup',function(req,res){
-  if(!req.body.name || !req.body.email || !req.body.password){
-      res.send(
-          {
-              success: false, errorSet : ['Error no name or password or email']
-          }
-      );
-  }else{
-      var compte ={
-          _id : uuidv4(),
-          name : req.body.name,
-          email : req.body.email,
-          password : req.body.password
-      };
-      userRepository.signup(compte,function(user, newUser){
-        if(newUser)
-        {
-          res.send({success : true,compte : user});
-          console.log("new User created :"+user);
-        }
-        else 
-        {
-          res.send({success : false});
-          console.log("No user created : user exist ");
-        }
-      });
+app.post('/signup', function (req, res) {
+  if (!req.body.name || !req.body.email || !req.body.password) {
+    res.send({
+      success: false,
+      errorSet: ['Error no name or password or email']
+    });
+  } else {
+    var compte = {
+      _id: uuidv4(),
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password
+    };
+    userRepository.signup(compte, function (user, newUser) {
+      if (newUser) {
+        res.send({
+          success: true,
+          compte: user
+        });
+        console.log("new User created :" + user);
+      } else {
+        res.send({
+          success: false
+        });
+        console.log("No user created : user exist ");
+      }
+    });
   };
 });
 var port = 8090;
@@ -90,6 +94,127 @@ app.post('/login', function (req, res) {
       })
 
   })
+})
+app.post('/videos/search', function (req, res) {
+  var input = req.body.input
+  var site = req.body.site
+  var videos = []
+  var isOk
+  console.log(input, site);
+
+  if (input) {
+    switch (site) {
+      case "Vimeo":
+        request.get("https://api.vimeo.com/videos?query=" + input + "&per_page=20&access_token=d3266a4b836cde5f096ae6abe8de8c79", function (error, response, body) {
+          // console.log( JSON.parse(res.body).data);
+          if (response.statusCode == 200) {
+            isOk = true;
+            var items = JSON.parse(response.body).data
+            for (var i in items) {
+              var linkParts = items[i].uri.split('/')
+              // console.log(linkParts);
+
+              videos.push({
+                videoId: linkParts[linkParts.length - 1],
+                site: 'vimeo',
+                name: items[i].name,
+                watchUrl: "https://vimeo.com/",
+                embedUrl: "https://player.vimeo.com/video/",
+                thumbnailUrl: items[i].pictures[0].link,
+                description: items[i].description
+              })
+            }
+            console.log(videos);
+
+            res.send({
+              data: videos,
+              success: isOk
+            })
+          }
+        })
+        break;
+
+      case "Youtube":
+        request.get("https://www.googleapis.com/youtube/v3/search?part=snippet&order=relevance&maxResults=20&q=" + input + "&type=video&key=AIzaSyA670YSi6pImC-35QYETHPxp_rHItuNCvc",
+          function (err, response, body) {
+            // console.log(res);
+            if (response.statusCode == 200) {
+              isOk = true
+              var items = JSON.parse(response.body).items
+              for (var i in items) {
+                videos.push({
+                  videoId: items[i].id.videoId,
+                  site: 'youtube',
+                  name: items[i].snippet.title,
+                  embedUrl: "https://www.youtube.com/embed/",
+                  watchUrl: "https://www.youtube.com//watch?v=",
+                  thumbnailUrl: items[i].snippet.thumbnails.default.url,
+                  description: items[i].snippet.description
+                })
+              }
+              // console.log(videos);
+              res.send({
+                data: videos,
+                success: isOk
+              })
+            }
+          })
+        break;
+    }
+
+  }
+})
+
+app.post('/video/getVideoInfo', function (req, res) {
+  var site = req.body.site;
+  var videoId = req.body.videoId
+  var video;
+  console.log(req.body);
+
+  if (site && videoId) {
+    switch (site) {
+      case "vimeo":
+        request.get("https://api.vimeo.com/videos/"+videoId+"?access_token=d3266a4b836cde5f096ae6abe8de8c79", function (err, response, body) {
+          var item = JSON.parse(response.body)
+          video = {
+            videoId: videoId,
+            site: site,
+            name: item.name,
+            watchUrl: "https://vimeo.com/",
+            embedUrl: "https://player.vimeo.com/video/",
+            thumbnailUrl: item.pictures[0].link,
+            description: item.description
+          }
+          console.log('videoInfo', video);
+
+          res.send({
+            data: video,
+            success: true,
+          })
+        })
+        break;
+      case "youtube":
+        request.get("https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=" + videoId + "&key=AIzaSyA670YSi6pImC-35QYETHPxp_rHItuNCvc", function (err, response, body) {
+          var items = JSON.parse(response.body).items
+          video = {
+            videoId: videoId,
+            site: site,
+            name: items[0].snippet.title,
+            embedUrl: "https://www.youtube.com/embed/",
+            watchUrl: "https://www.youtube.com//watch?v=",
+            thumbnailUrl: items[0].snippet.thumbnails.default.url,
+            description: items[0].snippet.description
+          }
+          console.log('videoInfo', video);
+
+          res.send({
+            data: video,
+            success: true,
+          })
+        })
+        break;
+    }
+  }
 })
 
 

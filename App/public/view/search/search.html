@@ -1,56 +1,13 @@
-<div ng-controller="searchCtrl">
-    <div class="container">
-
-        <div class="row">
-            <form class="navbar-form" role="search" ng-submit="search()">
-                <div class="input-group add-on">
-                    <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" ng-model="searchInput"
-                        type="text">
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                    </div>
+<div data-ng-controller="searchCtrl" data-ng-init="load()">
+    <div class="row search-result" id="resultContent">
+        <div class="col-md-4" ng-repeat="video in videos">
+            <div class="thumbnail" ng-click="playVideo(video)">
+                <img src="{{video.thumbnailUrl}}" alt="Lights" style="width:100%">
+                <div class="caption">
+                    <span style="display:block;text-overflow: ellipsis;width: 100%;overflow: hidden; white-space: nowrap;">{{video.name}}</span>
                 </div>
-
-                <div class="input-group-btn search-panel">
-                    <select class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        <option>Youtube</option>
-                        <option>Vimeo</option>
-                    </select>
-                </div>
-            </form>
-
-
-        </div>
-        <div class="row">
-            <div class="col-md-4" ng-repeat="video in videos">
-                <!-- <div class="row">
-                            <div class="col-sm-6 wrapper">
-                                <ng-youtube-embed video="video.id.videoId" width="100%">
-                                </ng-youtube-embed>
-                                <label class="text-center">Simple embed (Add youtube video URL or Id)</label>
-                            </div>
-                        </div> -->
-                <!-- <button ng-click="addToPlaylist({video.})">click here</button> -->
-
-                <!-- Youtube -->
-                <!-- <div class="thumbnail">
-                    <img src="{{video.snippet.thumbnails.default.url}}" alt="Lights" style="width:100%">
-                    <div class="caption">
-                        <p>{{video.snippet.title}}</p>
-                    </div>
-                    </a>
-                </div> -->
-
-                <!-- Vimeo -->
-                <div class="thumbnail">
-                        <img src="{{video.pictures[0].link}}" alt="Lights" style="width:100%">
-                        <div class="caption">
-                            <p>{{video.name}}</p>
-                        </div>
-                        </a>
-                    </div>
             </div>
         </div>
-
     </div>
+</div>
 </div>

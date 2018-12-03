@@ -1,0 +1,25 @@
+<div ng-controller="videoPlayerCtrl" data-ng-init="loadVideo()" class="video-player">
+    <div>
+        <iframe ng-if="video" ng-src="{{url}}" frameborder="0" width="640" height="360" title="{{video.name}}"></iframe>
+
+    </div>
+    <div class="description">
+        <h3>{{video.name}}</h3>
+        <hr>
+        <p>
+            {{video.description}}
+        </p>
+    </div>
+</div>
+<style>
+    .video-player {
+        /* position: relative; */
+        margin-top: 30px;
+        margin-left: 30%;
+    }
+
+    .description {
+        position: relative;
+
+    }
+</style>

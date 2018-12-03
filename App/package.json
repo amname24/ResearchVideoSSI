@@ -14,11 +14,13 @@
     "ejs": "2.1.4",
     "express": "4.11.0",
     "fs": "0.0.1-security",
+    "http": "0.0.0",
     "https": "1.0.0",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "5.3.9",
     "ng-cookies": "^1.0.2",
     "ng-youtube-embed": "^1.7.15",
+    "request": "^2.88.0",
     "uuid": "3.3.2"
   },
   "author": "",
