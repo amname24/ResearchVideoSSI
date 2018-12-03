@@ -27,7 +27,7 @@ videoApp.config(function ($stateProvider) {
     };
     var searchPageState = {
         name: "searchPage",
-        url: "/search:site&:input",
+        url: "/search",
         templateUrl: "view/search/search.html",
         controller: "searchCtrl",
     };

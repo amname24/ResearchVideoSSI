@@ -1,6 +1,6 @@
 var videoApp = angular.module('videoApp',  ['ngCookies','ui.router','ngYoutubeEmbed']);
 
-videoApp.controller('indexCtrl', ['$http', '$scope', '$location','$state','$window', function ($http, $scope, $location, $state, $window) {
+videoApp.controller('indexCtrl', ['$http', '$scope','$state', function ($http, $scope, $state) {
     $scope.sites = [{
         siteName: 'Youtube',
         selected: 'true'
@@ -13,7 +13,7 @@ videoApp.controller('indexCtrl', ['$http', '$scope', '$location','$state','$wind
         var site = $scope.selectedSite.siteName;
         console.log('search')
     //    $state.go('searchPage', {site: site, input: searchInput})
-        $window.location.href = "https://localhost:8090/#!/search?site=" + site + "&input=" + searchInput
+        window.location.href = "https://localhost:8090/#!/search?site=" + site + "&input=" + searchInput
     }
   
 }]);
