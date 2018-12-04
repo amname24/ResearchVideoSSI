@@ -1,9 +1,9 @@
 <div ng-controller="videoPlayerCtrl" data-ng-init="loadVideo()" class="video-player">
     <div>
         <!-- <iframe ng-if="video" ng-src="{{url}}" frameborder="0" width="640" height="360" title="{{video.name}}"></iframe> -->
-        <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" data-setup="{}" ng-src="{{url}}"
-            type="video/mp4">
-
+        <video id="videoPlayer" controls>
+            <source src="https://localhost:8090/video/getVideoInfo" type="video/mp4">
+          </video>
     </div>
     <div class="description">
         <h3>{{video.name}}</h3>

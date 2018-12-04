@@ -22,11 +22,10 @@ videoApp.controller('searchCtrl', ['videoService', '$http', '$scope', '$location
         })
 
     }
-    $scope.playVideo = function (video) {
-        window.location.href = "https://localhost:8090/#!/player?site=" + video.site + "&videoId=" + video.videoId
-    }
+    // $scope.playVideo = function (video) {
+    //     window.location.href = "https://localhost:8090/#!/player?site=" + video.site + "&videoId=" + video.videoId
+    // }
     $rootScope.$on("$locationChangeStart", function(event, next, current) { 
-        console.log('url changed');
         $scope.load()
         
     });
