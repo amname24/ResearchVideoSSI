@@ -85,8 +85,38 @@ app.post(`/user/login`,(req, res) => {
 }
 );
 
+app.post('/videos/search',(req, res) => {    
+  axios.post('http://localhost:8092/videos/search',
+    {
+      input : req.body.input,
+      site : req.body.site
+    }
+  ).then(function(response) {
+    res.json(response.data);
+  }).catch(function(error) {
+    res.send(false);
+  });
+}
+);
+
+
+app.post('/video/getVideoInfo',(req, res) => {    
+  axios.post('http://localhost:8092/video/getVideoInfo',
+    {
+      site : req.body.site,
+      videoId : req.body.videoId
+    }
+  ).then(function(response) {
+    res.json(response.data);
+  }).catch(function(error) {
+    res.send(false);
+  });
+}
+);
+
 
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
   console.log("Port : " + port);
 });
+

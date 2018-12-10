@@ -9,7 +9,7 @@ mongoose.connect('mongodb://localhost/videoresearch', function (err) {
     if (err) {
         throw err;
     } else {
-        console.log('Mongo Database : connected');
+        console.log('Mongo User Database : connected');
     }
 });
 
