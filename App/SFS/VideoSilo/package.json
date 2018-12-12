@@ -9,6 +9,11 @@
   "author": "amna",
   "license": "ISC",
   "dependencies": {
-    "npm": "^6.4.1"
+    "express": "^4.16.4",
+    "ng-request": "0.0.3",
+    "npm": "^6.4.1",
+    "request": "^2.88.0",
+    "uuid": "^3.3.2",
+    "youtube-dl": "^1.12.2"
   }
 }
