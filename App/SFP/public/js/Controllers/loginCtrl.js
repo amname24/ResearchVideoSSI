@@ -1,6 +1,6 @@
 // var loginPage = angular.module("loginPage", [])
 
-videoApp.controller('loginCtrl', ['loginService', 'encryptService', '$scope', '$state', '$cookies', function (loginService, encryptService, $scope, $state, $cookies) {
+videoApp.controller('loginCtrl', ['loginService', 'encryptService', '$scope', '$state', '$cookies','$location', function (loginService, encryptService, $scope, $state, $cookies, $location) {
 
     $scope.login = function () {
         var hashPw
@@ -16,7 +16,8 @@ videoApp.controller('loginCtrl', ['loginService', 'encryptService', '$scope', '$
                     var token = res.data.token;
                     var now = new Date()
                     $cookies.put('token', token, {expires: new Date(now.getFullYear(), now.getMonth()+1, now.getDate())})
-                    $state.go('home')
+                    $state.go('/home')
+                    // $location.path('/');
                     console.log($cookies.get('token'));
 
                 } else
