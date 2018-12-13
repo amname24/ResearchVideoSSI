@@ -11,6 +11,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/ng-youtube-embed@1.7.15/build/ng-youtube-embed.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.0.2/sha.js"></script>
 
 	<script src="js/Controllers/indexCtrl.js"></script>
 
@@ -27,6 +28,7 @@
 	<script src="js/Services/signupService.js"></script> 
 	<link rel="stylesheet" type="text/css" href="view/signup/signup.css">
 	
+	<script src="js/Services/encryptService.js"></script>
 
 	<!-- search page -->
 	<script src="js/Controllers/searchCtrl.js"></script>
@@ -37,25 +39,25 @@
 
 </head>
 	
-<body>
-	<div class="sidenav">
+<body data-ng-init="load()" ng-controller = "indexCtrl">
+	<div class="sidenav" ng-if="logged">
 		<ul>
 			<li>
-				<a href="#">Home</a>
+				<a ui-sref="home" ui-sref-active="active">Home</a>
 			</li>
-			<li>
+			<!-- <li>
 				<a ui-sref="login" ui-sref-active="active">Login</a>
-			</li>
+			</li> -->
 			<li>
 				<a href="#">Contact</a>
 			</li>
 		</ul>
 	</div>
 
-	<div class="container" ng-controller="indexCtrl">
+	<div class="container">
 
-        <div class="row">
-            <form class="navbar-form" role="search" ng-submit="search()">
+        <div class="row" >
+            <form ng-if="logged" ng-controller = "indexCtrl" class="navbar-form" role="search" ng-submit="search()">
                 <div class="input-group add-on">
                     <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" ng-model="searchInput"
                         type="text">

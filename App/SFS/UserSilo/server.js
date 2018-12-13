@@ -2,8 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var uuidv4 = require('uuid/v4');
 var userRepository = require('./user.db');
-
-
+const fs = require('fs')
+var jwt = require('jsonwebtoken');
 var app = express();
 
 app.use(bodyParser.json());
@@ -45,25 +45,36 @@ app.post('/register',function(req,res){
     };
 });
 
+const RSA_PRIVATE_KEY = fs.readFileSync('./config/private.pem');
 app.post('/login', function (req, res) {
+    console.log(req.body.email)
     var user = {
       email: req.body.email,
       password: req.body.password
     }
+  
     userRepository.login(user, function (user, isFound) {
+      var token;
       if (isFound) {
-        console.log("user is found ");
+        token = jwt.sign({
+          id: user._id,
+          email: user.email
+        }, RSA_PRIVATE_KEY, {
+          // algorithm: 'RS256',
+          expiresIn: 120
+        })
         res.send({
-          success: true,
-          user: user
+          success: isFound,
+          username: user.username,
+          token: token
         });
       } else
         res.send({
-          success: false
+          success: isFound
         })
+  
     })
   })
-
 
 var port = 8091;
 

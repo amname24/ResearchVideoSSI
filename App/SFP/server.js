@@ -46,37 +46,16 @@ app.post(`/user/register`, (req, res) => {
   });
 });
 
-const RSA_PRIVATE_KEY = fs.readFileSync('./config/private.pem');
+// const RSA_PRIVATE_KEY = fs.readFileSync('./config/private.pem');
 
 app.post(`/user/login`, (req, res) => {
-  var that = this;
   axios.post('http://localhost:8091/login', {
     email: req.body.email,
     password: req.body.password
   }).then(function (response) {
-    console.log(response.data.success)
-    var token;
-    if (response.data.success) {
-      console.log("user is found so creat token ")
-      console.log(response.data.user)
-
-      token = jwt.sign({
-        id: response.data.user._id,
-        email: response.data.user.email
-      }, RSA_PRIVATE_KEY, {
-        // algorithm: 'RS256',
-        expiresIn: 120
-      })
-      console.log(token)
-      res.send({
-        success: true,
-        username: response.data.user.username,
-        token: token
-      });
-    }
+    res.json(response.data);
   }).catch(function (error) {
-    console.log("error in the login SFP " + error.message)
-    res.send(error.message)
+    res.send(false);
   });
 });
 
@@ -119,4 +98,4 @@ app.post('/video/getVideoInfo', (req, res) => {
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
   console.log("Port : " + port);
-});
+}); 

@@ -10,7 +10,7 @@ videoApp.factory('loginService', ['$http', function ($http) {
         console.log(user);
         $http.post('/user/login', user).then(function(res){
             cb(res) 
-        }).e
+        })
     }
     return server;
 }])
