@@ -8,7 +8,8 @@ videoApp.controller('loginCtrl', ['loginService', '$scope', '$state','$cookies',
             if (res.data.success) {
                 username = res.data.username;
                 var token = res.data.token;
-                $cookies.put('token', token)
+                $cookies.put('token', token);
+                loginService.logged();
                 $state.go('home')
                 console.log($cookies.get('token'));
                 

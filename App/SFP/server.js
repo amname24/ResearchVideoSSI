@@ -80,6 +80,27 @@ app.post(`/user/login`, (req, res) => {
   });
 });
 
+
+app.post('/user/verify',(req, res) => {
+  var that = this;
+  
+  var token = req.body.token;
+  
+  if (!token) {
+    res.send(that.makeError("MISSING_PARAMS_TOKEN"));
+    return;
+  }
+  jwt.verify(token,RSA_PRIVATE_KEY, function(err, decoded) {
+    if (err) {
+      return res.send({ success: false, error: "BAD_TOKEN"});
+    } else {
+      // if everything is good, save to request for use in other routes
+      return res.send({success: true});
+    }
+  });
+});
+
+
 app.post('/videos/search', (req, res) => {
   axios.post('http://localhost:8092/videos/search', {
     input: req.body.input,
@@ -115,6 +136,7 @@ app.post('/video/getVideoInfo', (req, res) => {
     res.send(false);
   });
 });
+
 
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
