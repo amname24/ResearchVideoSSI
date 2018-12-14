@@ -2,7 +2,9 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var uuidv4 = require('uuid/v4');
 var userRepository = require('./user.db');
-
+const fs = require('fs')
+var jwt = require('jsonwebtoken');
+var Cookies = require('cookies');
 
 var app = express();
 
@@ -44,25 +46,54 @@ app.post('/register',function(req,res){
         });
     };
 });
-
+const RSA_PRIVATE_KEY = fs.readFileSync('./config/private.pem');
 app.post('/login', function (req, res) {
+    console.log(req.body.email)
     var user = {
       email: req.body.email,
       password: req.body.password
     }
+  
     userRepository.login(user, function (user, isFound) {
+      var token;
       if (isFound) {
-        console.log("user is found ");
+        token = jwt.sign({
+          id: user._id,
+          email: user.email
+        }, RSA_PRIVATE_KEY, {
+          // algorithm: 'RS256',
+          expiresIn: 120
+        });
         res.send({
-          success: true,
-          user: user
+          success: isFound,
+          username: user.name,
+          token : token
         });
       } else
         res.send({
-          success: false
+          success: isFound
         })
+  
     })
   })
+
+  app.post('/verify',(req, res) => {
+    var token=req.body.token;
+    console.log(token);
+    if (!token) {
+      res.send(that.makeError("MISSING_PARAMS_TOKEN"));
+      return;
+    }
+    jwt.verify(token,RSA_PRIVATE_KEY, function(err, decoded) {
+      if (err) {
+        return res.send({ success: false, error: "BAD_TOKEN"});
+      } else {
+        // if everything is good, save to request for use in other routes
+        return res.send({success: true});
+      }
+    });
+  });
+
 
 
 var port = 8091;
