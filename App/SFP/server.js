@@ -68,44 +68,72 @@ app.post(`/user/verify`,(req, res) => {
 
 
 app.post('/videos/search', (req, res) => {
-  axios.post('http://localhost:8092/videos/search', {
-    input: req.body.input,
-    site: req.body.site
-  }).then(function (response) {
-    res.json(response.data);
-  }).catch(function (error) {
-    res.send(false);
-  });
+  var site = req.body.site
+  console.log(site);
+
+  if (site.toLowerCase() == "youtube") {
+    console.log('true');
+
+    axios.post('http://localhost:8092/videos/youtube/search', {
+      input: req.body.input
+    }).then(function (response) {
+      res.json(response.data);
+    }).catch(function (error) {
+      res.send(false);
+    });
+  } else if (site.toLowerCase() == "vimeo") {
+    axios.post('http://localhost:8092/videos/vimeo/search', {
+      input: req.body.input
+    }).then(function (response) {
+      res.json(response.data);
+    }).catch(function (error) {
+      res.send(false);
+    });
+  }
+
 });
 
 
-
-app.get('/video/youtube/:videoId', (req, res) => {
+app.get('/video/:site/:videoId', (req, res) => {
   console.log('server', req.params.videoId);
+  var site = req.params.site
   var videoId = req.params.videoId;
+  if (site == "youtube")
+    request.get('http://localhost:8092/video/youtube/' + videoId).pipe(res)
+  else if (site == "vimeo")
+    request.get('http://localhost:8092/video/vimeo/' + videoId).pipe(res)
 
-  request.get('http://localhost:8092/video/youtube/'  + videoId).pipe(res)
 });
 
 
 
 app.post('/video/getVideoInfo', (req, res) => {
-  console.log(req.body);
-  
-  axios.post('http://localhost:8092/video/getVideoInfo', {
-    site: req.body.site,
-    videoId: req.body.videoId
-  }).then(function (response) {
-    console.log(response.data);
-    
-    res.send(response.data);
-  }).catch(function (error) {
-    res.send(false);
-  });
+  var site = req.body.site
+  if (site == "youtube") {
+    axios.post('http://localhost:8092/video/youtube/getVideoInfo', {
+      videoId: req.body.videoId
+    }).then(function (response) {
+      console.log(response.data);
+
+      res.send(response.data);
+    }).catch(function (error) {
+      res.send(false);
+    });
+  } else if (site == "vimeo") {
+    axios.post('http://localhost:8092/video/vimeo/getVideoInfo', {
+      videoId: req.body.videoId
+    }).then(function (response) {
+      console.log(response.data);
+
+      res.send(response.data);
+    }).catch(function (error) {
+      res.send(false);
+    });
+  }
 });
 
 
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
   console.log("Port : " + port);
-}); 
+});

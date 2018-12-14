@@ -29,11 +29,18 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
         templateUrl: "view/search/player.html",
         controller: "videoPlayerCtrl",
     }
+    var historyPageState = {
+        name: "home.historyPage",
+        url: "home/history",
+        templateUrl: "view/search/history.html",
+        controller: "historyCtrl",
+    };
     $stateProvider.state(homeState);
     $stateProvider.state(loginState);
     $stateProvider.state(signinState);
     $stateProvider.state(searchPageState);
     $stateProvider.state(videoPlayerState);
+    $stateProvider.state(historyPageState);
     $urlRouterProvider.otherwise("/");
 })
 

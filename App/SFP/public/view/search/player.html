@@ -1,17 +1,9 @@
 <div ng-controller="videoPlayerCtrl" data-ng-init="loadVideo()" class="video-player">
-
-    <div ng-switch="site">
-        <div ng-switch-when="youtube">
-            <video id="videoPlayer" controls>
-                <source ng-if="videoId" ng-src="https://localhost:8090/video/youtube/{{videoId}}" type="video/mp4">
-            </video>
-        </div>
-        <div ng-switch-when="vimeo">
-            <iframe ng-src="{{url}}" frameborder="0" width="640" height="360" title="{{video.name}}"></iframe>
-        </div>
+    <div>
+        <video id="videoPlayer" width="640" height="360" controls>
+            <source ng-if="videoId != ''  &&  site!=''" ng-src="https://localhost:8090/video/{{site}}/{{videoId}}" type="video/mp4">
+        </video>
     </div>
-
-
 
     <div class="description">
         <h3>{{video.name}}</h3>
