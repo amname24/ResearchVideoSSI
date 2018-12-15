@@ -1,6 +1,5 @@
-var videoApp = angular.module('videoApp', ['ngCookies', 'ui.router', 'ngYoutubeEmbed']);
 
-videoApp.controller('homeCtrl', ['loginService','$http', '$scope', '$cookies','$location',function (loginService,$http, $scope, $cookies, $location) {
+videoApp.controller('homeCtrl', ['loginService','$http', '$rootScope','$scope', '$cookies','$location',function (loginService,$http,$rootScope, $scope, $cookies, $location) {
     
     $scope.sites = [{
         siteName: 'Youtube',
@@ -18,8 +17,9 @@ videoApp.controller('homeCtrl', ['loginService','$http', '$scope', '$cookies','$
         window.location.href = "https://localhost:8090/#!/home/search?site=" + site + "&input=" + searchInput
     }
     $scope.load = function () {
-        $scope.username = $cookies.get('username');
-        $scope.email = $cookies.get('email');
+        $rootScope.username = $cookies.get('username');
+        $rootScope.email = $cookies.get('email');
+        $rootScope.userId = $cookies.get('userId');
         $scope.logged = true;
     }
     //toDo

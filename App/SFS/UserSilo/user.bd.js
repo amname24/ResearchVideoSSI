@@ -5,7 +5,7 @@ var uuidv4 = require("uuid/v4");
 
 var Schema = mongoose.Schema;
 
-mongoose.connect('mongodb://localhost/videoresearch', function (err) {
+mongoose.connect('mongodb://localhost/user', function (err) {
     if (err) {
         throw err;
     } else {

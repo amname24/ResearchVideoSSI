@@ -2,14 +2,16 @@ var express = require('express');
 const https = require("https");
 var bodyParser = require('body-parser');
 var uuidv4 = require('uuid/v4');
-const request = require("request")
+const request = require("request");
+var videoRepository = require('./video.bd');
+
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 var youtubedl = require('youtube-dl');
-var vidl = require('vimeo-downloader')
+var vidl = require('vimeo-downloader');
 
 var port = 8092;
 
@@ -78,7 +80,6 @@ app.post('/videos/vimeo/search', function (req, res) {
   })
 })
 
-
 app.get('/video/youtube/:videoId', function (req, res) {
   var videoId = req.params.videoId
   console.log("video silo get info", req.params);
@@ -93,9 +94,8 @@ app.get('/video/youtube/:videoId', function (req, res) {
 
 app.get('/video/vimeo/:videoId', function (req, res) {
   var videoId = req.params.videoId
-  vidl("https://vimeo.com/" + videoId).pipe(res)
+  vidl("https://vimeo.com/" + videoId).pipe(res);
 })
-
 app.post('/video/vimeo/getVideoInfo', function (req, res) {
   var videoId = req.body.videoId
   console.log('vimeo Silo', videoId);
@@ -141,7 +141,60 @@ app.post('/video/youtube/getVideoInfo', function (req, res) {
       success: true,
     })
   })
+})
+app.post('/video/history', function (req, res) {
+  console.log("History in SFS Video");
+  var history ={
+    _id: uuidv4(),
+    user_id:req.body.user_id,
+    video_id : req.body.video_id
+  };
+    videoRepository.addHistory(history,function(videoHistory){
+      if(videoHistory)
+      {
+        res.send({success : true,history : videoHistory});
+        console.log("new history created :"+videoHistory);
+      }
+      else res.send({success : false});
+    });
+})
 
+app.post('/video/add', function (req, res) {
+  console.log("add video in SFS Video");
+  var video = {
+    _id : uuidv4(),
+    name : req.body.name,
+    video_id : req.body.video_id,
+    thumbnailUrl: req.body.thumbnailUrl,
+    description: req.body.description,
+    site :req.body.site
+  };
+    videoRepository.addVideo(video,function(resp,sucess){
+      if(sucess)
+      {
+        res.send({success : true,video :resp});
+        console.log("new video created "+resp);
+      }
+      else res.send({success : false});
+    });
+})
+
+app.post('/video/playlist/add', function (req, res) {
+  console.log("add playlist in SFS Video");
+  var playlist = {
+    _id : uuidv4(),
+    name : req.body.name,
+    video_id : req.body.video_id,
+    user_id: req.body.user_id
+  };
+    videoRepository.addPlayList(playlist,function(playlist){
+      if(playlist)
+      {
+        res.send({success : true,playlist : playlist});
+        console.log("new playlist created :"+playlist);
+      }
+      else res.send({success : false});
+    });
 })
 
 app.listen(port, function () {

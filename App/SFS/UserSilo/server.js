@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var uuidv4 = require('uuid/v4');
-var userRepository = require('./user.db');
+var userRepository = require('./user.bd');
 const fs = require('fs')
 var jwt = require('jsonwebtoken');
 var Cookies = require('cookies');
@@ -67,6 +67,7 @@ app.post('/login', function (req, res) {
         res.send({
           success: isFound,
           username: user.name,
+          userId: user._id,
           token : token
         });
       } else
