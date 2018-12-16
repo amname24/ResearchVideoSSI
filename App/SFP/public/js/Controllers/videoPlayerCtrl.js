@@ -18,17 +18,20 @@ videoApp.controller('videoPlayerCtrl', ['videoService', '$sce','$rootScope', '$s
                 $scope.url = $sce.trustAsResourceUrl($scope.video.embedUrl + $scope.videoId)
                 videoService.addVideo(video,function (response) {
                     if (response.success) {
-                        var history = {
-                            user_id: $rootScope.userId,
-                            video_id: response.video._id
-                        }
-                        videoService.addHistory(history,function (res) {
-                            if(res){
-                                console.log("video added to History");
+                        if($rootScope.searched){
+                            var history = {
+                                user_id: $rootScope.userId,
+                                video_id: response.video._id
                             }
-                            else
-                                console.log("problem video NOT added to History");   
-                        })
+                            videoService.addHistory(history,function (res) {
+                                if(res){
+                                    console.log("video added to History");
+                                }
+                                else
+                                    console.log("problem video NOT added to History");   
+                            })
+                            $rootScope.searched = false;
+                        }
                     } else
                         console.log("problem video NOT added and Not found");                
                 }

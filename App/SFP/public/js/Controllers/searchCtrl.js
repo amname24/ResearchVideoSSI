@@ -1,5 +1,4 @@
 videoApp.controller('searchCtrl', ['videoService', '$http', '$scope', '$location', '$rootScope', function (videoService, $http, $scope, $location, $rootScope) {
- 
     videos = [];
     var searchInput;
     var site;
@@ -22,6 +21,7 @@ videoApp.controller('searchCtrl', ['videoService', '$http', '$scope', '$location
         })
     }
     $scope.playVideo = function (video) {
+        $rootScope.searched = true;
         window.location.href = "https://localhost:8090/#!/home/player?site=" + video.site + "&videoId=" + video.videoId
     }
     $rootScope.$on("$locationChangeStart", function(event, next, current) { 

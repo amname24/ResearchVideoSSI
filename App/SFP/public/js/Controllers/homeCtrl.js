@@ -26,4 +26,7 @@ videoApp.controller('homeCtrl', ['loginService','$http', '$rootScope','$scope', 
     $scope.isAdmin = function(){
         return false;
     }
+    $scope.history=function(){
+        window.location.href = "https://localhost:8090/#!/home/history";
+    }
 }]);

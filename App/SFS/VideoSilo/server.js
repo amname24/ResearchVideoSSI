@@ -196,6 +196,15 @@ app.post('/video/playlist/add', function (req, res) {
       else res.send({success : false});
     });
 })
+app.get('/history/:user_id',function(req,res){
+  var user_id = req.params.user_id 
+  videoRepository.findAllVideosHistory(user_id,function(success,videos){
+    if(success){
+      res.send({success : true,histories : videos});
+    }
+    else res.send({success : false});
+  })
+})
 
 app.listen(port, function () {
   console.log("Port: ", port);

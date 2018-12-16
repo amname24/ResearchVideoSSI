@@ -128,5 +128,44 @@ module.exports = {
             }
         });
     },
-
+    findAllHistory : function(user_id,cb){
+        HistoryModel.find({user_id:user_id}, function(err, histories) {
+            if(err){
+                console.log("problem while getting Histories");
+                cb(false);
+            }
+            else 
+                cb(true,histories);  
+          });
+    },
+    findAllVideosHistory : function(user_id,cb){
+        HistoryModel.find({user_id:user_id}, function(err, histories) {
+            if(err){
+                console.log("problem while getting Histories");
+                cb(false);
+            }
+            else 
+            {
+                var videos = [];
+                histories.forEach(function(history) {
+                    VideoModel.findOne({_id:history.video_id},function(err,video){
+                        if(err)
+                            console.log("this video not found"+err);
+                        else {
+                            var videoHistory = {
+                                date_watched : history.date_watched,
+                                video : video
+                            }
+                            videos.push(videoHistory)
+                            if (videos.length === histories.length) {
+                                // we are done! :D
+                                console.log(videos);
+                                cb(true,videos)
+                            }
+                        }
+                    })
+                })
+            }
+          });
+    }
 };

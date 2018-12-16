@@ -38,6 +38,11 @@ videoApp.factory('videoService', ['$http', function ($http) {
             cb(res.data)
         })
     }
+    server.historysearch = function(user_id,cb){
+        $http.get('/history/'+user_id).then(function(res){
+            cb(res.data.histories)
+        });
+    }
 
     server.addPlayList= function(playlist,cb){
         var req = {

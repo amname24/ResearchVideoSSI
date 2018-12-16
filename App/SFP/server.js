@@ -155,7 +155,14 @@ app.post(`/video/history`, (req, res) => {
   });
 });
 
-
+app.get(`/history/:user_id`, (req, res) => {
+  var user_id = req.params.user_id 
+  axios.get('http://localhost:8092/history/'+user_id).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
 
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
