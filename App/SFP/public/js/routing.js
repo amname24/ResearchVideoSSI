@@ -1,47 +1,57 @@
-videoApp.config(function ($stateProvider) {
+videoApp.config(function ($stateProvider,$urlRouterProvider) {
     var homeState = {
         name: "home",
         url: "/",
         templateUrl: "view/home/home.html",
-        controller: "indexCtrl"
+        controller: "homeCtrl",
     };
     var loginState = {
         name: "login",
         url: "/login",
         templateUrl: "view/login/login.html",
-        controller: "loginCtrl"
+        controller: "loginCtrl",
     };
     var signinState = {
         name: "signup",
         url: "/signup",
         templateUrl: "view/signup/signup.html",
-        controller: "signupCtrl"
+        controller: "signupCtrl",
     };
     var searchPageState = {
-        name: "searchPage",
-        url: "/search",
+        name: "home.searchPage",
+        url: "home/search",
         templateUrl: "view/search/search.html",
         controller: "searchCtrl",
     };
     var videoPlayerState = {
-        name :"videoPlayer",
-        url: "/player",
+        name :"home.videoPlayer",
+        url: "home/player",
         templateUrl: "view/search/player.html",
-        controller: "videoPlayerCtrl"
+        controller: "videoPlayerCtrl",
     }
+    var historyPageState = {
+        name: "home.historyPage",
+        url: "home/history",
+        templateUrl: "view/search/history.html",
+        controller: "historyCtrl",
+    };
     $stateProvider.state(homeState);
     $stateProvider.state(loginState);
     $stateProvider.state(signinState);
     $stateProvider.state(searchPageState);
     $stateProvider.state(videoPlayerState);
-});
+    $stateProvider.state(historyPageState);
+    $urlRouterProvider.otherwise("/");
+})
 
-// angular.module('videoApp').run(['$cookies', '$location', function ($cookies,$location) {
-    
-//     if(!$cookies.get('token')){
-//         $location.path('/login');
-//         var logged = false
-//     }
-//     else  
-//         $location.path('/');
-//   }]);
+angular.module('videoApp').run(['$cookies', '$location','loginService', function ($cookies,$location,loginService) {
+
+    var token = $cookies.get('token');
+    console.log(token);
+    loginService.verify(token,function(res){
+        if (!res.data.success) {
+            $location.path('/login');
+        }
+    })
+
+  }]);

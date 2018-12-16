@@ -1,15 +1,14 @@
 var path = require('path');
 const axios = require("axios");
 var jwt = require('jsonwebtoken');
-var Cookies = require("cookies");
 const yml = require("js-yaml");
 const https = require("https"),
   fs = require("fs");
 
 
 const options = {
-  key: fs.readFileSync("D:/AMU/Semestre 9/Securite avancee/ResearchVideoSSI/SSL/research.com.key", 'utf8'),
-  cert: fs.readFileSync("D:/AMU/Semestre 9/Securite avancee/ResearchVideoSSI/SSL/research.com.crt", 'utf8'),
+  key: fs.readFileSync("C:/Users/me/Desktop/Etudes/5A/SISecuProjet/SSL/research.com.key", 'utf8'),
+  cert: fs.readFileSync("C:/Users/me/Desktop/Etudes/5A/SISecuProjet/SSL/research.com.crt", 'utf8'),
 };
 
 var express = require('express');
@@ -58,6 +57,15 @@ app.post(`/user/login`, (req, res) => {
     res.send(false);
   });
 });
+
+app.post(`/user/verify`,(req, res) => {
+  axios.post('http://localhost:8091/verify',{token:req.body.token}).then(function (response) {
+    res.json(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+
 
 app.post('/videos/search', (req, res) => {
   var site = req.body.site
@@ -123,6 +131,7 @@ app.post('/video/getVideoInfo', (req, res) => {
     });
   }
 });
+
 
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
