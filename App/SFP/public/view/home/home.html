@@ -7,27 +7,64 @@
             <li><a>forgetPassord</a></li>
             <li><a href="#login">logout</a></li>
         </ul>
-        <ul class ="playList">
-                <li></li>
-        </ul>
+        <div class="panel panel-default " id ="playlists">
+            <div class="panel-heading">
+                <h4 class="panel-title" >
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-music">
+                    </span> Playlists 
+                </a>
+                <span class="pull-right center">
+                    <a class="btn icon-btn btn-success" href="#"><span class="glyphicon btn-glyphicon glyphicon-plus"></span></a>
+                </span>
+                </h4>
+            </div>
+            <div id="collapseFour" class="panel-collapse collapse">
+                <div class="list-group">
+                <a href="#" class="list-group-item clearfix">
+                    <span class="glyphicon glyphicon-file"></span>
+                    playList1
+                    <span class="pull-right">
+                        <button class="btn btn-xs btn-warning">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </span>
+                    <!-- <span class="badge badge-default badge-pill">14</span> -->
+                </a>
+                <a href="#" class="list-group-item clearfix">
+                    <span class="glyphicon glyphicon-file"></span>
+                    playList2
+                    <span class="pull-right">
+                        <button class="btn btn-xs btn-warning">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </span>
+                    <!-- <span class="badge badge-default badge-pill">4</span> -->
+                </a>
+                </div>
+            </div>
+        </div>
     </div>
+
 	<div class="container">
         <div class="row" >
-            <form ng-if="logged" ng-controller = "homeCtrl" class="navbar-form" role="search" ng-submit="search()">
-                <div class="input-group add-on">
-                    <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" ng-model="searchInput"
-                        type="text">
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            <div class ="container">
+                <form ng-if="logged" ng-controller = "homeCtrl" class="navbar-form" role="search" ng-submit="search()">
+                    <div class="input-group add-on">
+                        <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" ng-model="searchInput"
+                            type="text">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
                     </div>
-                </div>
-                <div class="input-group-btn search-panel">
-                    <select class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-options="site as site.siteName for site in sites"
-                        ng-model="selectedSite">
-                        <option value="">-- Select a site --</option>
-                    </select>
-                </div>
-            </form>
+                    <div class="input-group-btn search-panel">
+                        <select class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-options="site as site.siteName for site in sites"
+                            ng-model="selectedSite">
+                            <option value="">-- Select a site --</option>
+                        </select>
+                    </div>
+                </form>
+                <button class="btn btn-primary history" ng-click="history()">History</button>
+            </div>
 		<ui-view></ui-view>
 	</div>
 
