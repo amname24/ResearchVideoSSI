@@ -46,12 +46,12 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
 
 angular.module('videoApp').run(['$cookies', '$location','loginService', function ($cookies,$location,loginService) {
 
-    var token = $cookies.get('token');
-    console.log(token);
-    loginService.verify(token,function(res){
-        if (!res.data.success) {
-            $location.path('/login');
-        }
-    })
+    // var token = $cookies.get('token');
+    // console.log(token);
+    // loginService.verify(token,function(res){
+    //     if (!res.data.success) {
+    //         $location.path('/login');
+    //     }
+    // })
 
   }]);
