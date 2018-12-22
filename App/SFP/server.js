@@ -7,8 +7,8 @@ const https = require("https"),
 
 
 const options = {
-  key: fs.readFileSync("D:/AMU/Semestre 9/Securite avancee/ResearchVideoSSI/SSL/research.com.key", 'utf8'),
-  cert: fs.readFileSync("D:/AMU/Semestre 9/Securite avancee/ResearchVideoSSI/SSL/research.com.crt", 'utf8'),
+  key: fs.readFileSync("../../SSL/research.com.key", 'utf8'),
+  cert: fs.readFileSync("../../SSL/research.com.crt", 'utf8'),
 };
 
 var express = require('express');

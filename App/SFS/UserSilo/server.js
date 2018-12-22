@@ -71,6 +71,7 @@ app.post('/login', function (req, res) {
       res.send({
         success: isFound,
         username: user.name,
+        userId: user._id,
         token: token
       });
     } else
