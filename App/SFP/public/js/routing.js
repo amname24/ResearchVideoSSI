@@ -41,6 +41,13 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
         templateUrl: "view/playlist/playlist.html",
         controller:"playlistCtrl",
     };
+    var adminPageState =  {
+        name: "admin",
+        url: "/admin",
+        templateUrl: "view/admin/admin-home.html",
+        controller: "adminCtrl",
+    }
+
     $stateProvider.state(homeState);
     $stateProvider.state(loginState);
     $stateProvider.state(signinState);
@@ -48,6 +55,7 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
     $stateProvider.state(videoPlayerState);
     $stateProvider.state(historyPageState);
     $stateProvider.state(playlistState);
+    $stateProvider.state(adminPageState);
     $urlRouterProvider.otherwise("/");
 })
 

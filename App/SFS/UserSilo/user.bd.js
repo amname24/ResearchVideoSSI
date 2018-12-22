@@ -79,7 +79,15 @@ module.exports = {
                 cb(count, false);
             }
         })
+    },
+    getAll: function(cb){
+        AccountModel.find({role_id: 'user'}, function(err, users){
+            if(err){
+                throw err;
+            }
+            else {
+                cb(users)
+            }
+        })
     }
-
-
 };

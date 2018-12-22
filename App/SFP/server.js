@@ -7,8 +7,8 @@ const https = require("https"),
 
 
 const options = {
-  key: fs.readFileSync("C:/Users/me/Desktop/Etudes/5A/SISecuProjet/SSL/research.com.key", 'utf8'),
-  cert: fs.readFileSync("C:/Users/me/Desktop/Etudes/5A/SISecuProjet/SSL/research.com.crt", 'utf8'),
+  key: fs.readFileSync("D:/AMU/Semestre 9/Securite avancee/ResearchVideoSSI/SSL/research.com.key", 'utf8'),
+  cert: fs.readFileSync("D:/AMU/Semestre 9/Securite avancee/ResearchVideoSSI/SSL/research.com.crt", 'utf8'),
 };
 
 var express = require('express');
@@ -58,14 +58,22 @@ app.post(`/user/login`, (req, res) => {
   });
 });
 
-app.post(`/user/verify`,(req, res) => {
-  axios.post('http://localhost:8091/verify',{token:req.body.token}).then(function (response) {
+app.post(`/user/verify`, (req, res) => {
+  axios.post('http://localhost:8091/verify', {
+    token: req.body.token
+  }).then(function (response) {
     res.json(response.data);
   }).catch(function (error) {
     res.send(false);
   });
 });
-
+app.post('/user/adminVerify', function (req, res) {
+  axios.post('http://localhost:8091/adminVerify').then(function (res) {
+    res.json(response.data)
+  }).catch(function (err) {
+    res.send(false)
+  })
+})
 
 app.post('/videos/search', (req, res) => {
   var site = req.body.site
