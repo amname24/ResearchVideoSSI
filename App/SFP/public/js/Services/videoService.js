@@ -59,7 +59,7 @@ videoApp.factory('videoService', ['$http', function ($http) {
     server.addVideo = function(video,cb){
         var req = {
             name : video.name,
-            video_id : video.video_id,
+            video_id : video.videoId,
             thumbnailUrl: video.thumbnailUrl,
             description: video.description,
             site :video.site
@@ -67,6 +67,11 @@ videoApp.factory('videoService', ['$http', function ($http) {
         $http.post('/video/add',req).then(function(res){
             cb(res.data);
         })
+    }
+    server.playlistvideos = function(playlist,cb){
+        $http.get('/playlist/videos/'+playlist._id).then(function(res){
+            cb(res.data.videos)
+        });
     }
     return server;
 }])

@@ -164,6 +164,56 @@ app.get(`/history/:user_id`, (req, res) => {
   });
 });
 
+app.get('/playlist/videos/:playlist_id', (req, res) => {
+  var playlist_id = req.params.playlist_id 
+  axios.get('http://localhost:8092/playlist/videos/'+playlist_id).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+
+
+app.get(`/playlist/:user_id`, (req, res) => {
+  var user_id = req.params.user_id 
+  axios.get('http://localhost:8092/playlist/'+user_id).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+
+app.post(`/playlist/add`, (req, res) => {
+  axios.post('http://localhost:8092/playlist/add', {
+    user_id:req.body.user_id,
+    name : req.body.name,
+}).then(function (response) {
+    res.send(response.data);  
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+app.post(`/playlist/delete`, (req, res) => {
+  axios.post('http://localhost:8092/playlist/delete', {
+    playlist:req.body.playlist,
+}).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+app.post('/playlist/video/add',(req, res) => {
+  axios.post('http://localhost:8092/playlist/video/add', {
+    video:req.body.video,
+    playlist:req.body.playlist
+}).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
+
+
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
   console.log("Port : " + port);

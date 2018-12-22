@@ -2,6 +2,9 @@ videoApp.controller('searchCtrl', ['videoService', '$http', '$scope', '$location
     videos = [];
     var searchInput;
     var site;
+    $scope.selectVideo = function(video){
+        $rootScope.selectedVideo = video;
+    }
     $scope.load = function () {
         searchInput = $location.search().input
         site = $location.search().site
