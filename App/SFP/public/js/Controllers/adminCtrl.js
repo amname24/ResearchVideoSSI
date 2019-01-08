@@ -11,24 +11,6 @@ videoApp.controller('adminCtrl', ['$http', '$mdDialog', 'adminService', 'encrypt
 
     }
 
-    $scope.showPrompt = function (ev) {
-        // Appending dialog to document.body to cover sidenav in docs app
-        var confirm = $mdDialog.prompt()
-            .title('What would you name your dog?')
-            .textContent('Bowser is a common name.')
-            .placeholder('Dog name')
-            .ariaLabel('Dog name')
-            .initialValue('Buddy')
-            .targetEvent(ev)
-            .ok('Okay!')
-            .cancel('I\'m a cat person');
-
-        $mdDialog.show(confirm).then(function (result) {
-            $scope.status = 'You decided to name your dog ' + result + '.';
-        }, function () {
-            $scope.status = 'You didn\'t name your dog.';
-        });
-    };
     $scope.users = this.loadUsers()
     $scope.verify = function () {
         console.log('verify');
@@ -40,20 +22,30 @@ videoApp.controller('adminCtrl', ['$http', '$mdDialog', 'adminService', 'encrypt
     $scope.editDialog = function (user) {
         $scope.selectedAccount = user
         console.log($scope.selectedAccount);
-        
+
         $mdDialog.show({
             controller: DialogController,
             templateUrl: 'editAccount.tmpl.html',
             parent: angular.element(document.body),
             isolateScope: false,
             locals: {
-                users : $scope.users,
+                users: $scope.users,
                 selectedAccount: $scope.selectedAccount
-              },
-            clickOutsideToClose:true,
-          }).then(function(res){
-              $scope.users = res
-          })
+            },
+            clickOutsideToClose: true,
+        }).then(function (res) {
+            if (res) {
+                var confirm = $mdDialog.alert()
+                    .clickOutsideToClose(true)
+                    .title('Confirmation Dialog')
+                    .textContent('Successfully updated')
+                    .ok('Got it!')
+                    .multiple(true)
+                $mdDialog.show(confirm)
+                $scope.users = res
+
+            }
+        })
 
     }
 
@@ -112,22 +104,24 @@ function DialogController($scope, $mdDialog, users, selectedAccount, adminServic
     $scope.answer = function (answer) {
         $mdDialog.hide(answer);
     };
-    $scope.update = function(){ 
-        if($scope.selectedAccount.role_id != $scope.roleSelected ||
-        $scope.selectedAccount.status != $scope.statusSelected){
-            
-            var accountToUpdate = users.find(x=>x._id == $scope.selectedAccount._id)
+    $scope.update = function () {
+        if ($scope.selectedAccount.role_id != $scope.roleSelected ||
+            $scope.selectedAccount.status != $scope.statusSelected) {
+
+            var accountToUpdate = users.find(x => x._id == $scope.selectedAccount._id)
             console.log('account found', accountToUpdate);
             accountToUpdate.role_id = $scope.roleSelected
             accountToUpdate.status = $scope.statusSelected
-                  
-            adminService.updateAccount(accountToUpdate, function(res){
+
+            adminService.updateAccount(accountToUpdate, function (res) {
                 accountToUpdate = res
                 $mdDialog.hide(users)
-                
+
             })
+        } else {
+            $mdDialog.hide()
         }
-      
-        
+
+
     }
 }
