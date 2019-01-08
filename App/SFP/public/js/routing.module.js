@@ -1,1 +1,1 @@
-var videoApp = angular.module('videoApp', ['ngCookies', 'ui.router', 'ngYoutubeEmbed']);
+var videoApp = angular.module('videoApp', ['ngCookies','ngMaterial', 'ngMessages', 'ui.router']);

@@ -172,6 +172,43 @@ app.get(`/history/:user_id`, (req, res) => {
   });
 });
 
+app.get('/admin/getAllUsers',(req,res)=>{
+  axios.get('http://localhost:8091/admin/getAllUsers').then(function (response) {
+    res.json(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
+
+app.post('/admin/createAccount', (req, res)=>{
+  axios.post('http://localhost:8091/admin/createAccount', {
+    name:req.body.name,
+    email : req.body.email,
+    password: req.body.password,
+    role: req.body.role,
+    status: req.body.status
+}).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
+app.post('/admin/account/update', (req, res)=>{
+  axios.post('http://localhost:8091/admin/account/update', {
+    _id: req.body._id,
+    name:req.body.name,
+    email : req.body.email,
+    password: req.body.password,
+    role_id: req.body.role_id,
+    status: req.body.status,
+    last_login : req.body.last_login,
+    created_at : req.body.created_at
+}).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
   console.log("Port : " + port);

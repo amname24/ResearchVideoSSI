@@ -69,8 +69,11 @@ module.exports = {
                     if(err){
                         console.log("problème creation acount in the BD ");
                         console.error();
+                        return res.status(400).send({
+                            message: err
+                          });
                     } else{
-                        console.log("a new acount is created in the BD ");
+                        console.log("a new acount is created in the BD ", resp);
                         cb(resp,true);
                     }
                 });
@@ -80,8 +83,53 @@ module.exports = {
             }
         })
     },
-    getAll: function(cb){
-        AccountModel.find({role_id: 'user'}, function(err, users){
+    createAccount : function(compte, cb){
+        var lastLogin = (new Date()).toISOString();
+        AccountModel.count({
+            email: compte.email,
+        }, function (err, count) {
+            if (err) {    
+                console.error();
+            } else if (count == 0) {
+                console.log("this mail was not used before to register "+compte.email)            
+                var nouveau = new  AccountModel({
+                    _id : compte._id,
+                    name : compte.name,
+                    email : compte.email,
+                    password : compte.password,
+                    last_login: lastLogin,
+                    status : compte.status,
+                    role_id: compte.role_id,
+                    created_at : lastLogin
+                });
+                nouveau.save(function(err,resp){
+                    if(err){
+                        console.log("problème creation acount in the BD ");
+                        console.error();
+                    } else{
+                        console.log("a new acount is created in the BD ");
+                        console.log('here', resp);
+                        
+                        cb(resp,true);
+                    }
+                });
+            } else {
+                console.log("this mail was used before to register "+compte.email)      
+                cb(count, false);
+            }
+        })
+    },
+    update: function(account, cb){
+        AccountModel.findByIdAndUpdate(account._id, account,{new: true}, function(err, updatedAcc){
+            if(err){
+                throw err;
+            }else{
+                cb(updatedAcc);
+            }
+        });
+    },
+    getAllUsers: function(cb){
+        AccountModel.find({}, function(err, users){
             if(err){
                 throw err;
             }
