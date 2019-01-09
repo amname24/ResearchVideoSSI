@@ -103,7 +103,8 @@ app.post('/verify', (req, res) => {
   });
 });
 app.post('/adminVerify', function (req, res) {
-
+  console.log('usersilo admin', req.body);
+  
   res.send('something')
 
 })

@@ -1,4 +1,4 @@
-videoApp.controller('adminCtrl', ['$http', '$mdDialog', 'adminService', 'encryptService', '$window', '$scope', function ($http, $mdDialog, adminService, encryptService, $window, $scope) {
+videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$cookies','adminService', 'encryptService', '$window', '$scope', function ($http, $mdDialog, $cookies, adminService, encryptService, $window, $scope) {
     this.loadUsers = function () {
         // table = document.getElementById('data-table')
         $scope.selectedAccount
@@ -12,10 +12,15 @@ videoApp.controller('adminCtrl', ['$http', '$mdDialog', 'adminService', 'encrypt
     }
 
     $scope.users = this.loadUsers()
-    $scope.verify = function () {
+    $scope.verifyAdmin = function () {
         console.log('verify');
-
-        $http.post('user/adminVerify').then(function (res) {
+        var token = $cookies.get('token')
+        console.log(token);
+        var req = {
+            token: token
+        }
+        
+        $http.post('user/adminVerify', req).then(function (res) {
             console.log(res.data);
         });
     }
