@@ -179,22 +179,73 @@ app.post('/video/add', function (req, res) {
     });
 })
 
-app.post('/video/playlist/add', function (req, res) {
+app.post('/playlist/add', function (req, res) {
   console.log("add playlist in SFS Video");
   var playlist = {
     _id : uuidv4(),
     name : req.body.name,
-    video_id : req.body.video_id,
     user_id: req.body.user_id
   };
-    videoRepository.addPlayList(playlist,function(playlist){
-      if(playlist)
+    videoRepository.addPlayList(playlist,function(playlist,success){
+      if(success)
       {
         res.send({success : true,playlist : playlist});
         console.log("new playlist created :"+playlist);
       }
+      else if(playlist)
+      {
+        res.send({success : true});
+        console.log("playlist exist");
+      }
       else res.send({success : false});
     });
+})
+app.post('/playlist/delete', function (req, res) {
+  console.log("delete playlist in SFS Video");
+    videoRepository.deletePlayList(req.body.playlist,function(playlist,sucess){
+      if(sucess)
+      {
+        res.send({success : true,playlist : playlist});
+        console.log(" playlist deleted :"+JSON.stringify(playlist));
+      }
+      else res.send({success : false});
+    });
+})
+app.post('/playlist/video/add',function (req, res) {
+  var vidoPlaylist = {
+    _id : uuidv4(),
+    video_id : req.body.video._id,
+    playlist_id: req.body.playlist._id
+  };
+  console.log("add p vido to playlist in SFS Video");
+    videoRepository.addVideoToPlayList(vidoPlaylist,function(playlistvideo,sucess){
+      if(sucess)
+      {
+        res.send({success : true,playlistvideo : playlistvideo});
+        console.log(" playlistvideo :"+JSON.stringify(playlistvideo));
+      }
+      else res.send({success : false});
+    });
+})
+
+app.get('/playlist/:user_id',function(req,res){
+  var user_id = req.params.user_id 
+  videoRepository.findAllPlaylists(user_id,function(success,playlists){
+    if(success){
+      res.send({success : true,playlists : playlists});
+    }
+    else res.send({success : false});
+  })
+})
+app.get('/playlist/videos/:playlist_id',function(req,res){
+  var playlist_id = req.params.playlist_id 
+  videoRepository.findAllvideosOfPlaylist(playlist_id ,function(success,videos){
+    if(success){
+      console.log('here : '+JSON.stringify(videos))
+      res.send({success : true,videos : videos});
+    }
+    else res.send({success : false});
+  })
 })
 app.get('/history/:user_id',function(req,res){
   var user_id = req.params.user_id 

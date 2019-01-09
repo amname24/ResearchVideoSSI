@@ -35,6 +35,12 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
         templateUrl: "view/search/history.html",
         controller: "historyCtrl",
     };
+    var playlistState = {
+        name: "home.playlist",
+        url: "home/playlist",
+        templateUrl: "view/playlist/playlist.html",
+        controller:"playlistCtrl",
+    };
     var adminPageState =  {
         name: "admin",
         url: "/admin",
@@ -48,18 +54,19 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
     $stateProvider.state(searchPageState);
     $stateProvider.state(videoPlayerState);
     $stateProvider.state(historyPageState);
+    $stateProvider.state(playlistState);
     $stateProvider.state(adminPageState);
     $urlRouterProvider.otherwise("/");
 })
 
 angular.module('videoApp').run(['$cookies', '$location','loginService', function ($cookies,$location,loginService) {
 
-    // var token = $cookies.get('token');
-    // console.log(token);
-    // loginService.verify(token,function(res){
-    //     if (!res.data.success) {
-    //         $location.path('/login');
-    //     }
-    // })
+    var token = $cookies.get('token');
+    console.log(token);
+    loginService.verify(token,function(res){
+        if (!res.data.success) {
+            $location.path('/login');
+        }
+    })
 
   }]);

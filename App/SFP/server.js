@@ -7,8 +7,8 @@ const https = require("https"),
 
 
 const options = {
-  key: fs.readFileSync("D:/AMU/Semestre 9/Securite avancee/ResearchVideoSSI/SSL/research.com.key", 'utf8'),
-  cert: fs.readFileSync("D:/AMU/Semestre 9/Securite avancee/ResearchVideoSSI/SSL/research.com.crt", 'utf8'),
+  key: fs.readFileSync("../../SSL/research.com.key", 'utf8'),
+  cert: fs.readFileSync("../../SSL/research.com.crt", 'utf8'),
 };
 
 var express = require('express');
@@ -209,7 +209,24 @@ app.post('/admin/account/create', (req, res) => {
   }).catch(function (error) {
     res.send(false);
   });
-})
+app.get('/playlist/videos/:playlist_id', (req, res) => {
+  var playlist_id = req.params.playlist_id 
+  axios.get('http://localhost:8092/playlist/videos/'+playlist_id).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+
+
+app.get(`/playlist/:user_id`, (req, res) => {
+  var user_id = req.params.user_id 
+  axios.get('http://localhost:8092/playlist/'+user_id).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
 app.post('/admin/account/update', (req, res) => {
   axios.post('http://localhost:8091/admin/account/update', {
     _id: req.body._id,
@@ -220,12 +237,45 @@ app.post('/admin/account/update', (req, res) => {
     status: req.body.status,
     last_login: req.body.last_login,
     created_at: req.body.created_at
-  }).then(function (response) {
+  }).then(function (response) {    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
+});
+
+app.post(`/playlist/add`, (req, res) => {
+  axios.post('http://localhost:8092/playlist/add', {
+    user_id:req.body.user_id,
+    name : req.body.name,
+}).then(function (response) {
+    res.send(response.data);  
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+app.post(`/playlist/delete`, (req, res) => {
+  axios.post('http://localhost:8092/playlist/delete', {
+    playlist:req.body.playlist,
+}).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+app.post('/playlist/video/add',(req, res) => {
+  axios.post('http://localhost:8092/playlist/video/add', {
+    video:req.body.video,
+    playlist:req.body.playlist
+}).then(function (response) {
     res.send(response.data);
   }).catch(function (error) {
     res.send(false);
   });
 })
+
+
+
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
   console.log("Port : " + port);
