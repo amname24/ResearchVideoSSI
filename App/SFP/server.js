@@ -7,8 +7,8 @@ const https = require("https"),
 
 
 const options = {
-  key: fs.readFileSync("D:/AMU/Semestre 9/Securite avancee/ResearchVideoSSI/SSL/research.com.key", 'utf8'),
-  cert: fs.readFileSync("D:/AMU/Semestre 9/Securite avancee/ResearchVideoSSI/SSL/research.com.crt", 'utf8'),
+  key: fs.readFileSync("../../SSL/research.com.key", 'utf8'),
+  cert: fs.readFileSync("../../SSL/research.com.crt", 'utf8'),
 };
 
 var express = require('express');
@@ -68,29 +68,6 @@ app.post(`/user/verify`, (req, res) => {
   });
 });
 
-function requireAdmin(req, res, next) {
-  // if (!req.user || !req.user.admin) {
-  //   next(new Error("Permission denied."));
-  //   return;
-  // }
-  console.log('requireAdmin', req.body);
-
-  axios.post('http://localhost:8091/adminVerify', req.body).then(function (resp) {
-  next();
-  // res.json(response.data)
-  }).catch(function (err) {
-    next(new Error("Permission denied."));
-    // res.send(false)
-    
-  })
-
-}
-app.post('/user/adminVerify', requireAdmin, function (req, res) {
-  console.log('adminVerify', req.body);
-
-
-  res.send('something')
-})
 
 app.post('/videos/search', (req, res) => {
   var site = req.body.site
@@ -189,6 +166,15 @@ app.get(`/history/:user_id`, (req, res) => {
   });
 });
 
+app.post('/user/verifyAdmin', function (req, res) {
+  axios.post('http://localhost:8091/adminVerify', req.body).then(function (resp) {
+    // console.log(resp.data);    
+    res.send(resp.data)
+  }).catch(function (err) {
+    res.send({auth: false, token: null})
+  })
+})
+
 app.get('/admin/getAllUsers', (req, res) => {
   axios.get('http://localhost:8091/admin/getAllUsers').then(function (response) {
     res.json(response.data);
@@ -210,6 +196,27 @@ app.post('/admin/account/create', (req, res) => {
     res.send(false);
   });
 })
+app.get('/playlist/videos/:playlist_id', (req, res) => {
+  var playlist_id = req.params.playlist_id
+  axios.get('http://localhost:8092/playlist/videos/' + playlist_id).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+
+
+app.get(`/playlist/:user_id`, (req, res) => {
+  // console.log('all playlist');
+
+  var user_id = req.params.user_id
+  axios.get('http://localhost:8092/playlist/' + user_id).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+
 app.post('/admin/account/update', (req, res) => {
   axios.post('http://localhost:8091/admin/account/update', {
     _id: req.body._id,
@@ -226,6 +233,48 @@ app.post('/admin/account/update', (req, res) => {
     res.send(false);
   });
 })
+
+
+app.post(`/playlist/add`, (req, res) => {
+  axios.post('http://localhost:8092/playlist/add', {
+    user_id: req.body.user_id,
+    name: req.body.name,
+  }).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+app.post(`/playlist/delete`, (req, res) => {
+  axios.post('http://localhost:8092/playlist/delete', {
+    playlist: req.body.playlist,
+  }).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+app.post('/playlist/video/add', (req, res) => {
+  axios.post('http://localhost:8092/playlist/video/add', {
+    video: req.body.video,
+    playlist: req.body.playlist
+  }).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
+
+app.post('/user/sendEmail', (req, res)=>{
+  axios.post('http://localhost:8091/user/sendEmail', {
+    email: req.body.email,
+  }).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
+
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
   console.log("Port : " + port);

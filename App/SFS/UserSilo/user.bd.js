@@ -128,6 +128,26 @@ module.exports = {
             }
         });
     },
+    findById: function(id, cb){
+        AccountModel.findById(id, function(err, account){
+            if(err){
+                cb(err, null)
+            }
+            else{
+                cb(null, account)
+            }
+        })
+    },
+    findByEmail: function (email, cb){
+        AccountModel.find({email: email}, function (err, account){
+            if(err){
+                cb(err, null)
+            }
+            else {
+                cb(null, account)
+            }
+        })
+    },
     getAllUsers: function(cb){
         AccountModel.find({}, function(err, users){
             if(err){

@@ -35,31 +35,58 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
         templateUrl: "view/search/history.html",
         controller: "historyCtrl",
     };
+    var playlistState = {
+        name: "home.playlist",
+        url: "home/playlist",
+        templateUrl: "view/playlist/playlist.html",
+        controller:"playlistCtrl",
+    };
     var adminPageState =  {
         name: "admin",
         url: "/admin",
         templateUrl: "view/admin/admin-home.html",
         controller: "adminCtrl",
     }
-
+    var NotFound = {
+        name: "404",
+        url: "/404",
+        templateUrl: "view/404.html"
+    }
+    var resetPassword = {
+        name: "resetpassword",
+        url: "/resetpassword",
+        templateUrl: "view/resetPassword/resetPassword.html",
+        controller: "resetPasswordCtrl"
+    };
+    var sendEmailPage = {
+        name: "sendEmail",
+        url: "/sendEmail",
+        templateUrl: "view/resetPassword/sendEmail.html",
+        controller: "resetPasswordCtrl"
+    }
+  
     $stateProvider.state(homeState);
     $stateProvider.state(loginState);
     $stateProvider.state(signinState);
     $stateProvider.state(searchPageState);
     $stateProvider.state(videoPlayerState);
     $stateProvider.state(historyPageState);
+    $stateProvider.state(playlistState);
     $stateProvider.state(adminPageState);
+    $stateProvider.state(resetPassword)
+    $stateProvider.state(sendEmailPage)
+    $stateProvider.state(NotFound);
     $urlRouterProvider.otherwise("/");
 })
 
 angular.module('videoApp').run(['$cookies', '$location','loginService', function ($cookies,$location,loginService) {
 
-    // var token = $cookies.get('token');
-    // console.log(token);
-    // loginService.verify(token,function(res){
-    //     if (!res.data.success) {
-    //         $location.path('/login');
-    //     }
-    // })
+    var token = $cookies.get('token');
+    console.log(token);
+    loginService.verify(token,function(res){
+        if (!res.data.success) {
+            $location.path('/login');
+        }
+    })
 
   }]);

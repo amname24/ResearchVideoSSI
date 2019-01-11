@@ -66,11 +66,12 @@ app.post('/login', function (req, res) {
         email: user.email
       }, RSA_PRIVATE_KEY, {
         // algorithm: 'RS256',
-        expiresIn: 120
+        expiresIn: 86400
       });
       res.send({
         success: isFound,
         username: user.name,
+        userId: user._id,
         token: token
       });
     } else
@@ -103,9 +104,52 @@ app.post('/verify', (req, res) => {
   });
 });
 app.post('/adminVerify', function (req, res) {
-  console.log('usersilo admin', req.body);
-  
-  res.send('something')
+  var token = req.body.token;
+  var userId = req.body.userId
+  if (!token) {
+    return res.send({
+      auth: false,
+      token: null
+    });
+  }
+  jwt.verify(token, RSA_PRIVATE_KEY, function (err, decoded) {
+    if (err) {
+      console.log('error', err);
+
+      return res.send({
+        auth: false,
+        error: "BAD_TOKEN",
+        token: null
+      });
+    } else {
+      console.log('decoded', decoded);
+      if (decoded.id == userId) {
+        userRepository.findById(userId, function (err, userFound) {
+          if (err) return res.send({
+            auth: false,
+            token: null
+          })
+          if (!userFound) return res.send({
+            auth: false,
+            token: null
+          })
+          if (userFound.status == 'active' && userFound.role_id == 'admin') {
+            console.log('is Admin');
+
+            return res.send({
+              auth: true,
+              token: token
+            })
+          }
+          return res.send({
+            auth: false,
+            token: null
+          })
+        })
+
+      }
+    }
+  });
 
 })
 
@@ -158,7 +202,7 @@ app.post('/admin/account/update', (req, res) => {
   var account = req.body
 
   userRepository.update(account, function (user) {
-    console.log('here',user);
+    console.log('here', user);
     res.send({
       data: user,
       success: true
@@ -166,8 +210,26 @@ app.post('/admin/account/update', (req, res) => {
 
   })
 
+})
+app.post('/user/sendEmail', function (req, res) {
+  var email = req.body.email
+  userRepository.findByEmail(email, function (err, userFound) {
+    if (err) {
+      return res.send(false)
+    }
+    if (!userFound) return res.send(false)
+    token = jwt.sign({
+      id: userFound._id,
+      username: userFound.username,
+      email: userFound.email
+    }, RSA_PRIVATE_KEY, {
+      expiresIn: 86400 //24h
+    });
+  })
+})
 
-
+app.post('/user/resetpassword/', function (req, res) {
+  // var token = req.
 })
 var port = 8091;
 

@@ -5,3 +5,17 @@
 #playlists a:hover{
     color:black 
 }
+#playlists a{
+    color:black 
+}
+.itemplaylistadd {
+    cursor: pointer;
+}
+.itemplaylistadd:hover{
+    background-color: darkgrey
+}
+.itemplaylist:hover{
+    background-color: darkgray;
+    text-decoration : none;
+    cursor: pointer;
+}

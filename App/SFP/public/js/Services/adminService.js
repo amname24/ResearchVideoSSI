@@ -4,7 +4,7 @@ videoApp.factory('adminService', ['$http', function ($http) {
     server.createAccount = function(newAccount,cb){
        console.log('adminService', newAccount);
        
-        $http.post('/admin/createAccount',newAccount).then(function(resp){
+        $http.post('/admin/account/create',newAccount).then(function(resp){
             console.log(resp);
             
             cb(resp.data.user);

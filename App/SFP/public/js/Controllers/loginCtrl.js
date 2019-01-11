@@ -19,10 +19,10 @@ videoApp.controller('loginCtrl', ['loginService', 'encryptService','$location', 
                     var userId = res.data.userId;
                     var token = res.data.token;
                     var now = new Date()
-                    $cookies.put('token', token, {expires: new Date(now.getFullYear(), now.getMonth()+1, now.getDate())});
-                    $cookies.put('username', username,{expires: new Date(now.getFullYear(), now.getMonth()+1, now.getDate())});
-                    $cookies.put('email', $scope.email,{expires: new Date(now.getFullYear(), now.getMonth()+1, now.getDate())});
-                    $cookies.put('userId', userId,{expires: new Date(now.getFullYear(), now.getMonth()+1, now.getDate())});
+                    $cookies.put('token', token, {expires: new Date(now.getFullYear(), now.getMonth(), now.getDate()+1)});
+                    $cookies.put('username', username,{expires: new Date(now.getFullYear(), now.getMonth(), now.getDate()+1)});
+                    $cookies.put('email', $scope.email,{expires: new Date(now.getFullYear(), now.getMonth(), now.getDate()+1)});
+                    $cookies.put('userId', userId,{expires: new Date(now.getFullYear(), now.getMonth(), now.getDate()+1)});
 
                     console.log("token : "+$cookies.get('token'));
                     console.log("username : "+$cookies.get('username'));
@@ -35,5 +35,8 @@ videoApp.controller('loginCtrl', ['loginService', 'encryptService','$location', 
                     alert('email or password is not correct');
             })
     };
+    $scope.resetPassword = function (){
+        
+    }
 
 }])
