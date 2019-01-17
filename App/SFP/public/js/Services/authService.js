@@ -26,7 +26,6 @@ videoApp.factory('authService', ['$http', '$cookies', '$state', function ($http,
         }
         $http.post('/user/verify',req).then(function(res){
             console.log(res.data);
-            
             cb(res.data) 
         })
     }

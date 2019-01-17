@@ -1,7 +1,6 @@
-// var loginPage = angular.module("loginPage", [])
 
-videoApp.controller('loginCtrl', ['loginService', 'encryptService', '$location', '$scope', '$state', '$cookies', function (loginService, encryptService, $location, $scope, $state, $cookies) {
-
+videoApp.controller('loginCtrl', ['loginService', 'encryptService','$location', '$scope', '$state', '$cookies', function (loginService, encryptService,$location, $scope, $state, $cookies) {
+    
     $scope.login = function () {
         var hashPw
         encryptService.encrypt($scope.password, function (res) {
@@ -34,9 +33,9 @@ videoApp.controller('loginCtrl', ['loginService', 'encryptService', '$location',
                     console.log("email : " + $cookies.get('email'));
                     console.log("userId : " + $cookies.get('userId'));
 
-                    //$location.path('/');
-                    $state.go('home');
-                } else {
+                    $location.path('/');
+                   
+                } else{
                     alert('email or password is not correct');
 
                     $cookies.remove('token');

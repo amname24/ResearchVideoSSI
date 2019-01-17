@@ -31,6 +31,7 @@ videoApp.factory('playlistService', ['$http', function ($http) {
     }
 
     server.addVideoToPlaylist = function(video,playlist,cb){
+        console.log("video add to playlist "+ JSON.stringify(video))
         var req = {
             video:video,
             playlist:playlist

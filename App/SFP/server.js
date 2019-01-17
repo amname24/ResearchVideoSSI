@@ -63,6 +63,7 @@ app.post(`/user/verify`, (req, res) => {
     userId: req.body.userId,
     token: req.body.token
   }).then(function (response) {
+    console.log(response.data);
     res.json(response.data);
   }).catch(function (error) {
     res.send(false);
@@ -167,6 +168,23 @@ app.get(`/history/:user_id`, (req, res) => {
   });
 });
 
+app.get('/admin/getAllUsers', (req, res) => {
+  axios.get('http://localhost:8091/admin/getAllUsers').then(function (response) {
+    res.json(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
+
+app.get(`/playlist/:user_id`, (req, res) => {
+  var user_id = req.params.user_id 
+  axios.get('http://localhost:8092/playlist/'+user_id).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+
 app.post('/user/verifyAdmin', function (req, res) {
   axios.post('http://localhost:8091/adminVerify', req.body).then(function (resp) {
     // console.log(resp.data);    
@@ -205,19 +223,6 @@ app.get('/playlist/videos/:playlist_id', (req, res) => {
     res.send(false);
   });
 });
-
-
-app.get(`/playlist/:user_id`, (req, res) => {
-  // console.log('all playlist');
-
-  var user_id = req.params.user_id
-  axios.get('http://localhost:8092/playlist/' + user_id).then(function (response) {
-    res.send(response.data);
-  }).catch(function (error) {
-    res.send(false);
-  });
-});
-
 app.post('/admin/account/update', (req, res) => {
   axios.post('http://localhost:8091/admin/account/update', {
     _id: req.body._id,
@@ -266,8 +271,9 @@ app.post('/playlist/video/add', (req, res) => {
   });
 })
 
-app.post('/user/sendEmail', (req, res)=>{
-  axios.post('http://localhost:8091/user/sendEmail', {
+
+app.post('/user/sendEmail',(req, res)=>{
+  axios.post('http://localhost:8091/forgot', {
     email: req.body.email,
   }).then(function (response) {
     res.send(response.data);
@@ -275,12 +281,29 @@ app.post('/user/sendEmail', (req, res)=>{
     res.send(false);
   });
 })
+app.post('/reset/:token',(req, res) => {
+  var token = req.params.token
+  var password = req.body.password
+  axios.post('http://localhost:8091/reset/' + token,{password: password}).then(function (response) {
+      res.send(response.data);
+    }).catch(function (error) {
+      res.send(false);
+    });
+});
 app.post('/user/changepassword', (req, res)=>{
   axios.post('http://localhost:8091/user/changepassword', {
     id: req.body.id,
     current_password: req.body.current_password,
     new_password: req.body.new_password,
   }).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
+app.post('/playlist/videos/delete',(req,res)=>{
+  var playlistvideo = req.body.playlistvideo
+  axios.post('http://localhost:8092/playlist/videos/delete',{playlistvideo: playlistvideo }).then(function (response) {
     res.send(response.data);
   }).catch(function (error) {
     res.send(false);

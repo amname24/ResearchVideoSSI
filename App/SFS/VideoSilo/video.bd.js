@@ -2,7 +2,6 @@ var mongoose = require("mongoose");
 var uuidv4 = require("uuid/v4");
 // var bcrypt = require("bcrypt");
 
-
 var Schema = mongoose.Schema;
 
 mongoose.connect('mongodb://localhost/video', function (err) {
@@ -65,15 +64,17 @@ module.exports = {
                     description: video.description,
                     site :video.site
                 });
-                nouveau.save(function(err,resp){
-                    if(err){
-                        console.log("problème creation video in the BD ");
-                        console.error();
-                    } else{
-                        console.log("a new video is created in the BD ");
-                        cb(resp,true);
-                    }
-                });
+                if(nouveau.video_id)
+                    nouveau.save(function(err,resp){
+                        if(err){
+                            console.log("problème creation video in the BD ");
+                            console.error();
+                        } else{
+                            console.log("a new video is created in the BD ");
+                            cb(resp,true);
+                        }
+                    });
+                else console.log("Error : No video_id in my video while addVideo")
             }
             else{
                 VideoModel.findOne({
@@ -186,6 +187,23 @@ module.exports = {
             }
         });
     },
+    deletevideofromplaylist : function(playlistvideo,cb){
+        PlayListVideoModel.deleteOne({
+            _id : playlistvideo._id,
+            playlist_id : playlistvideo.playlist_id,
+            video_id : playlistvideo.video_id,
+            date_created: playlistvideo.date_created,
+        },function(err){
+            if(err){
+                console.log("problème suppression video de playlist in the BD ");
+                console.error();
+                cb(false);
+            } else{
+                console.log("video deleted from playlist in the BD : "+JSON.stringify(playlistvideo));
+                cb(true);
+            }
+        });
+    },
     findAllHistory : function(user_id,cb){
         HistoryModel.find({user_id:user_id}, function(err, histories) {
             if(err){
@@ -244,17 +262,21 @@ module.exports = {
             }
             else 
             {
-                var videos = [];
+                var objects = [];
                 playlistvideos.forEach(function(playlistvideo) {
                     VideoModel.findOne({_id:playlistvideo.video_id},function(err,video){
                         if(err)
                             console.log("this video not found"+err);
                         else {
-                            videos.push(video)
-                            if (videos.length === playlistvideos.length) {
+                            var object = {
+                                video : video,
+                                playlistvideo : playlistvideo
+                            }
+                            objects.push(object)
+                            if (objects.length === playlistvideos.length) {
                                 // we are done! :D
-                                console.log(videos);
-                                cb(true,videos)
+                                console.log(objects);
+                                cb(true,objects)
                             }
                         }
                     })

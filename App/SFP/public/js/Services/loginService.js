@@ -11,13 +11,13 @@ videoApp.factory('loginService', ['$http', function ($http) {
             cb(res) 
         })
     }
-    // server.verify= function(token,cb){
-    //     var req = {
-    //         token : token
-    //     }
-    //     $http.post('/user/verify',req).then(function(res){
-    //         cb(res) 
-    //     })
-    // }
+    server.verify= function(token,cb){
+        var req = {
+            token : token
+        }
+        $http.post('/user/verify',req).then(function(res){
+            cb(res) 
+        })
+    }
     return server;
 }])

@@ -1,15 +1,20 @@
 videoApp.controller('playlistCtrl', ['videoService','$http','$rootScope', '$scope', '$cookies','$state',function (videoService,$http,$rootScope, $scope, $cookies, $state) {
-    $scope.selectVideo = function(video){
-        $rootScope.selectedVideo = video;
+    $scope.deletVideo = function(object){
+        videoService.deletevideo(object.playlistvideo, function (success) {
+            if (success) {
+                console.log("video deleted from plylist")
+                $scope.load();
+            }
+        });
     }
 $scope.load = function(){
-    $scope.videos = [];
+    $scope.objects=[];
    console.log($rootScope.playlistSelected)
    if($rootScope.playlistSelected){
-        videoService.playlistvideos ($rootScope.playlistSelected, function (res) {
-            if (res) {
-                $scope.videos = res
-                console.log(res);
+        videoService.playlistvideos ($rootScope.playlistSelected, function (objects) {
+            if (objects) {
+                $scope.objects = objects;
+                console.log(objects);
             }
         })
    }
@@ -20,7 +25,7 @@ $scope.playVideo = function (video) {
     window.location.href = "https://localhost:8090/#!/home/player?site=" + video.site + "&videoId=" + video.video_id ;
 }
 $rootScope.$on("$locationChangeStart", function(event, next, current) { 
-    $scope.videos = [];
+    $scope.objects = [];
     $scope.load()
 });
 }])
