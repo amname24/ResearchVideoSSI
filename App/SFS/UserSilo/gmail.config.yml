@@ -1,7 +1,0 @@
-{
-  service: 'Gmail',
-  auth: {
-    user: 'projetsecuritewebresearchvideo@gmail.com',
-    pass: 'amna1234'
-  }
-}
