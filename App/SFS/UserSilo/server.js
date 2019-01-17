@@ -52,12 +52,9 @@ app.post('/register', function (req, res) {
 });
 const RSA_PRIVATE_KEY = fs.readFileSync('./config/private.pem');
 app.post('/login', function (req, res) {
-  console.log(req.body)
-
   var email = req.body.email
   var password = req.body.password
   userRepository.findByEmail(email, function (err, userFound) {
-    console.log(userFound.status, userFound.password);
 
     if (err) return res.send({
       success: false,
