@@ -1,4 +1,3 @@
-// var loginPage = angular.module("loginPage", [])
 
 videoApp.controller('loginCtrl', ['loginService', 'encryptService','$location', '$scope', '$state', '$cookies', function (loginService, encryptService,$location, $scope, $state, $cookies) {
     

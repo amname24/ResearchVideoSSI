@@ -10,18 +10,24 @@ videoApp.factory('authService', ['$http', '$cookies', '$state', function ($http,
             userId: userId
         }
         console.log('req', req);
-        
-        $http.post('user/verifyAdmin', req).then(function(res){
+
+        $http.post('user/verifyAdmin', req).then(function (res) {
             console.log(res.data);
-            if(res.data.auth==true)
-                cb(res.data)
-            else{
-                // $cookies.remove('')
-                $state.go('404')
-            }
-            
+            cb(res.data)
         })
-     
+
+    }
+    server.verify= function(cb){
+        var token = $cookies.get('token')
+        var userId = $cookies.get('userId')
+        var req = {
+            token: token,
+            userId: userId
+        }
+        $http.post('/user/verify',req).then(function(res){
+            console.log(res.data);
+            cb(res.data) 
+        })
     }
     return server;
 }])

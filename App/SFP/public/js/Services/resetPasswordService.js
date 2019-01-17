@@ -21,5 +21,11 @@ videoApp.factory('resetPasswordService', ['$http', '$cookies', '$stateParams', f
             cb(res.data);
         })
     }
+    server.verifyResetToken = function(token, cb){
+        var req = {
+            token: token
+        }
+        $http.post('/user/')
+    }
     return server;
 }])

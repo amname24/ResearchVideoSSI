@@ -1,4 +1,4 @@
-videoApp.config(function ($stateProvider,$urlRouterProvider) {
+videoApp.config(function ($stateProvider, $urlRouterProvider) {
     var homeState = {
         name: "requireauth.home",
         url: "/",
@@ -40,14 +40,14 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
         name: "requireauth.home.playlist",
         url: "home/playlist",
         templateUrl: "view/playlist/playlist.html",
-        controller:"playlistCtrl",
+        controller: "playlistCtrl",
     };
     var adminPageState =  {
         name: "requireauth.admin",
         url: "/admin",
         templateUrl: "view/admin/admin-home.html",
         controller: "adminCtrl",
-    }
+    };
     var NotFound = {
         name: "404",
         url: "/404",
@@ -82,18 +82,58 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
     $urlRouterProvider.otherwise("/");
 })
 
-angular.module('videoApp').run(['$cookies', '$location','$transitions','loginService', function ($cookies,$location,  $transitions,loginService) {
-    $transitions.onBefore({to: 'requireauth.**'}, function (trans) {
-        var token = $cookies.get('token');
-        console.log(token);
-         loginService.verify(token,function(res){
-            if (!res.data.success) {
-                console.log("NO authentification: "+ JSON.stringify(res))
+videoApp.run(['$cookies', '$location','$transitions','authService', function ($cookies,$location,  $transitions,authService) {
+    $transitions.onBefore({to: 'requireauth.**'}, function (trans,state) {
+        authService.verify(function (resp) {
+            if (!resp.auth) {
+                console.log("NO authentification: "+ JSON.stringify(resp))
                 $location.path('/login');
                 return trans.router.stateService.target('login');
+            } else {
+                if (state.name =='requireauth.admin') {
+                    authService.verifyAdmin(function (res) {
+                        if (res.auth) {}
+                        else $location.path('/404');
+                    })
+                } else return true;
             }
-            else return true;
         })
     });
 }]);
 
+// angular.module('videoApp').run(['$cookies', '$rootScope', '$location', 'loginService', 'authService',
+//     function ($cookies, $rootScope, $location, loginService, authService) {
+
+
+
+//         $rootScope.$on('$locationChangeStart', function (event, next, current) {
+//             if (next == "https://localhost:8090/#!/signup" 
+//                 || next == "https://localhost:8090/#!/login"
+//                 || next == "https://localhost:8090/#!/resetPassword"
+//                 || next == "https://localhost:8090/#!/404"
+//                 || next == "https://localhost:8090/#!/sendEmail") {}
+//             else {
+//                 var token = $cookies.get('token');
+//                 console.log(token);
+
+//                 authService.verify(function (resp) {
+//                     if (!resp.auth) {
+//                         $location.path('/login');
+//                     } else {
+//                         if (next == "https://localhost:8090/#!/admin") {
+//                             authService.verifyAdmin(function (res) {
+//                                 if (res.auth) {}
+//                                 else $location.path('/404');
+//                             })
+//                         } else
+//                             {}
+//                     }
+//                 })
+//             }
+
+
+//         });
+
+
+//     }
+// ]);

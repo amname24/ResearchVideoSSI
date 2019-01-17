@@ -1,5 +1,5 @@
 body {
-    background-color: #2a3547;
+    background-color: #123c69;
     
     /* background-repeat: no-repeat; */
     /* background-size: cover; */
@@ -31,7 +31,6 @@ body {
     text-align: center;
     width: 360px;
     margin-left: calc(50% - 180px);
-
 }
 
 .login-form>p,

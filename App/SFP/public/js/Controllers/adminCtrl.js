@@ -1,5 +1,5 @@
-videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$cookies', 'authService', 'adminService', 'encryptService', '$window', '$scope',
-    function ($http, $mdDialog, $cookies, authService, adminService, encryptService, $window, $scope) {
+videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$state', 'authService', 'adminService', 'encryptService', '$window', '$scope',
+    function ($http, $mdDialog, $state, authService, adminService, encryptService, $window, $scope) {
         this.loadUsers = function () {
             authService.verifyAdmin(function (resp) {
                 if (resp.auth) {
@@ -8,6 +8,9 @@ videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$cookies', 'authService
                         $scope.users = res.data
                         return $scope.users
                     })
+                }
+                else {
+                    $state.go('404')
                 }
             })
 

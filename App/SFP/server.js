@@ -60,6 +60,7 @@ app.post(`/user/login`, (req, res) => {
 
 app.post(`/user/verify`, (req, res) => {
   axios.post('http://localhost:8091/verify', {
+    userId: req.body.userId,
     token: req.body.token
   }).then(function (response) {
     console.log(response.data);
@@ -184,27 +185,36 @@ app.get(`/playlist/:user_id`, (req, res) => {
   });
 });
 
-  app.post('/user/verifyAdmin', function (req, res) {
-    axios.post('http://localhost:8091/adminVerify', req.body).then(function (resp) {
-      // console.log(resp.data);    
-      res.send(resp.data)
-    }).catch(function (err) {
-      res.send({auth: false, token: null})
-    })
+app.post('/user/verifyAdmin', function (req, res) {
+  axios.post('http://localhost:8091/adminVerify', req.body).then(function (resp) {
+    // console.log(resp.data);    
+    res.send(resp.data)
+  }).catch(function (err) {
+    res.send({auth: false, token: null})
   })
-  
-  app.post('/admin/account/create', (req, res) => {
-    axios.post('http://localhost:8091/admin/createAccount', {
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      role: req.body.role,
-      status: req.body.status
-    }).then(function (response) {    res.send(response.data);
-    }).catch(function (error) {
-      res.send(false);
-    });
-  })
+})
+
+app.get('/admin/getAllUsers', (req, res) => {
+  axios.get('http://localhost:8091/admin/getAllUsers').then(function (response) {
+    res.json(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
+
+app.post('/admin/account/create', (req, res) => {
+  axios.post('http://localhost:8091/admin/createAccount', {
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    role: req.body.role,
+    status: req.body.status
+  }).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
 app.get('/playlist/videos/:playlist_id', (req, res) => {
   var playlist_id = req.params.playlist_id
   axios.get('http://localhost:8092/playlist/videos/' + playlist_id).then(function (response) {
@@ -288,6 +298,17 @@ app.post('/reset/:token',(req, res) => {
       res.send(false);
     });
 });
+app.post('/user/changepassword', (req, res)=>{
+  axios.post('http://localhost:8091/user/changepassword', {
+    id: req.body.id,
+    current_password: req.body.current_password,
+    new_password: req.body.new_password,
+  }).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
 app.post('/playlist/videos/delete',(req,res)=>{
   var playlistvideo = req.body.playlistvideo
   axios.post('http://localhost:8092/playlist/videos/delete',{playlistvideo: playlistvideo }).then(function (response) {
@@ -296,7 +317,6 @@ app.post('/playlist/videos/delete',(req,res)=>{
     res.send(false);
   });
 })
-
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
   console.log("Port : " + port);
