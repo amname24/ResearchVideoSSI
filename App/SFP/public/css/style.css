@@ -27,7 +27,10 @@
     margin-left: 18%; 
     /* width: calc(100% -200px); */
 }
-
+.form-horizontal.login {
+    padding: 100px;
+    width: 60%;
+}
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}

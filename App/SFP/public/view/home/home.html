@@ -1,12 +1,19 @@
 <div data-ng-init="load()" ng-controller="homeCtrl">
     <div class="sidenav" ng-if="logged">
-        <ul>
-            <li ng-bind="username"></li>
-            <li ng-bind="email"></li>
-            <li ng-if="isAdmin()"><a>admin</a></li>
-            <li><a data-ui-sref="sendEmail" class="data-link">forgetPassord</a></li>
-            <li><a data-ui-sref="login" class="data-link" data-ng-click="logout()">Logout</a></li>
-        </ul>
+        <div class="profile">
+            <ul class="sidebar-nav">
+                <li>
+                    <h3 ng-bind="username"></h3>
+                </li>
+                <li ng-bind="email"></li>
+                <li>
+                    <a data-ui-sref="admin" ng-if="isAdmin">Admin</a></li>
+                <li><a data-toggle="modal" data-ui-sref="" data-ui-sref-active="active" data-target="#changePasswordModal">Change
+                        password</a></li>
+                <li><a data-ui-sref="login" data-ng-click="logout()">Logout</a></li>
+            </ul>
+        </div>
+
         <div class="panel panel-default " id="playlists">
             <div class="panel-heading">
                 <h4 class="panel-title">
@@ -104,3 +111,83 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Change password</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" name="registerForm" action="">
+                        <div class="form-group" ng-class="{'has-error': registerForm.$dirty }">
+                            <label class="col-sm-4 control-label" for="CurrentPassword">Current Password</label>
+                            <div class="col-sm-8">
+                                <input id="CurrentPassword" type="password" class="form-control" required 
+                                    name="CurrentPassword" ng-model="CurrentPassword" />
+                            </div>
+                            <div class="col-sm-9">
+                                <span class="text-danger col-sm-offset-3" ng-if="password_error">
+                                    Current password is not correct
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': registerForm.$dirty && registerForm.Password.$invalid, 'has-success': registerForm.Password.$valid}">
+                            <label class="col-sm-4 control-label" for="Password">New Password</label>
+                            <div class="col-sm-8">
+                                <input id="Password" type="password" class="form-control" required check-length
+                                    check-symbols check-lowerletters check-upperletters check-numbers name="Password"
+                                    ng-model="Password" />
+                            </div>
+                            <div class="col-sm-9">
+                                <span class="text-danger col-sm-offset-3" ng-show="!registerForm.Password.$error.required && registerForm.Password.$error.checkLength">
+                                    Password too short : must have 8 caracters
+                                </span>
+                            </div>
+                            <div class="col-sm-9">
+                                <span class="text-danger col-sm-offset-3" ng-show="!registerForm.Password.$error.required && registerForm.Password.$error.checkSymbols">
+                                    Password with no symbols
+                                </span>
+                            </div>
+                            <div class="col-sm-9">
+                                <span class="text-danger col-sm-offset-3" ng-show="!registerForm.Password.$error.required && registerForm.Password.$error.checkLowerletters">
+                                    Password with no lower letters
+                                </span>
+                            </div>
+                            <div class="col-sm-9">
+                                <span class="text-danger col-sm-offset-3" ng-show="!registerForm.Password.$error.required && registerForm.Password.$error.checkUpperletters">
+                                    Password with no upper letters
+                                </span>
+                            </div>
+                            <div class="col-sm-9">
+                                <span class="text-danger col-sm-offset-3" ng-show="!registerForm.Password.$error.required && registerForm.Password.$error.checkNumbers">
+                                    Password with no numbers
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': registerForm.$dirty && registerForm.ConfirmPassword.$invalid, 'has-success': registerForm.ConfirmPassword.$valid}">
+                            <label class="col-sm-4 control-label" for="ConfirmPassword">Confirm Password</label>
+                            <div class="col-sm-8">
+                                <input id="ConfirmPassword" type="password" class="form-control" required equals-to="registerForm.Password"
+                                    name="ConfirmPassword" ng-model="ConfirmPassword" />
+                            </div> <span class="text-danger col-sm-offset-3" ng-show="!registerForm.ConfirmPassword.$error.required && registerForm.ConfirmPassword.$error.equalsTo">
+                                Passwords are differents
+                            </span>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-disabled="registerForm.$invalid"
+                        ng-click="changePassword()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    label {
+        color: black;
+    }
+</style>

@@ -1,4 +1,4 @@
-videoApp.config(function ($stateProvider,$urlRouterProvider) {
+videoApp.config(function ($stateProvider, $urlRouterProvider) {
     var homeState = {
         name: "home",
         url: "/",
@@ -24,7 +24,7 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
         controller: "searchCtrl",
     };
     var videoPlayerState = {
-        name :"home.videoPlayer",
+        name: "home.videoPlayer",
         url: "home/player",
         templateUrl: "view/search/player.html",
         controller: "videoPlayerCtrl",
@@ -39,32 +39,33 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
         name: "home.playlist",
         url: "home/playlist",
         templateUrl: "view/playlist/playlist.html",
-        controller:"playlistCtrl",
+        controller: "playlistCtrl",
     };
-    var adminPageState =  {
+    var adminPageState = {
         name: "admin",
         url: "/admin",
         templateUrl: "view/admin/admin-home.html",
         controller: "adminCtrl",
-    }
+    };
     var NotFound = {
         name: "404",
         url: "/404",
         templateUrl: "view/404.html"
-    }
+    };
     var resetPassword = {
         name: "resetpassword",
         url: "/resetpassword",
         templateUrl: "view/resetPassword/resetPassword.html",
-        controller: "resetPasswordCtrl"
+        // controller: "resetPasswordCtrl"
     };
     var sendEmailPage = {
         name: "sendEmail",
         url: "/sendEmail",
         templateUrl: "view/resetPassword/sendEmail.html",
         controller: "resetPasswordCtrl"
-    }
-  
+    };
+
+
     $stateProvider.state(homeState);
     $stateProvider.state(loginState);
     $stateProvider.state(signinState);
@@ -79,14 +80,39 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
     $urlRouterProvider.otherwise("/");
 })
 
-angular.module('videoApp').run(['$cookies', '$location','loginService', function ($cookies,$location,loginService) {
+angular.module('videoApp').run(['$cookies', '$rootScope', '$location', 'loginService', 'authService',
+    function ($cookies, $rootScope, $location, loginService, authService) {
 
-    var token = $cookies.get('token');
-    console.log(token);
-    loginService.verify(token,function(res){
-        if (!res.data.success) {
-            $location.path('/login');
-        }
-    })
 
-  }]);
+
+        $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            if (next == "https://localhost:8090/#!/signup" 
+                || next == "https://localhost:8090/#!/login"
+                || next == "https://localhost:8090/#!/resetPassword"
+                || next == "https://localhost:8090/#!/404"
+                || next == "https://localhost:8090/#!/sendEmail") {}
+            else {
+                var token = $cookies.get('token');
+                console.log(token);
+
+                authService.verify(function (resp) {
+                    if (!resp.auth) {
+                        $location.path('/login');
+                    } else {
+                        if (next == "https://localhost:8090/#!/admin") {
+                            authService.verifyAdmin(function (res) {
+                                if (res.auth) {}
+                                else $location.path('/404');
+                            })
+                        } else
+                            {}
+                    }
+                })
+            }
+
+
+        });
+
+
+    }
+]);

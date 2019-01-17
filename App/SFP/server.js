@@ -60,6 +60,7 @@ app.post(`/user/login`, (req, res) => {
 
 app.post(`/user/verify`, (req, res) => {
   axios.post('http://localhost:8091/verify', {
+    userId: req.body.userId,
     token: req.body.token
   }).then(function (response) {
     res.json(response.data);
@@ -274,7 +275,17 @@ app.post('/user/sendEmail', (req, res)=>{
     res.send(false);
   });
 })
-
+app.post('/user/changepassword', (req, res)=>{
+  axios.post('http://localhost:8091/user/changepassword', {
+    id: req.body.id,
+    current_password: req.body.current_password,
+    new_password: req.body.new_password,
+  }).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
   console.log("Port : " + port);

@@ -139,7 +139,7 @@ module.exports = {
         })
     },
     findByEmail: function (email, cb){
-        AccountModel.find({email: email}, function (err, account){
+        AccountModel.findOne({email: email}, function (err, account){
             if(err){
                 cb(err, null)
             }

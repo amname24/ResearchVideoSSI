@@ -1,10 +1,10 @@
 // var loginPage = angular.module("loginPage", [])
 
 videoApp.controller('loginCtrl', ['loginService', 'encryptService','$location', '$scope', '$state', '$cookies', function (loginService, encryptService,$location, $scope, $state, $cookies) {
-    $cookies.remove('token');
-    $cookies.remove('username');
-    $cookies.remove('email');
-    $cookies.remove('userId');
+    // $cookies.remove('token');
+    // $cookies.remove('username');
+    // $cookies.remove('email');
+    // $cookies.remove('userId');
     $scope.login = function () {
         var hashPw
         encryptService.encrypt($scope.password, function (res) {
