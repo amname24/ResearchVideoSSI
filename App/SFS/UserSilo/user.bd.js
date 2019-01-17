@@ -21,8 +21,11 @@ var AccountSchema = Schema({
     last_login : String,
     role_id: String,
     created_at : String, 
-    status: String 
+    status: String,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
+
 
 var AccountModel = mongoose.model('accounts', AccountSchema);
 
@@ -128,6 +131,26 @@ module.exports = {
             }
         });
     },
+    findById: function(id, cb){
+        AccountModel.findById(id, function(err, account){
+            if(err){
+                cb(err, null)
+            }
+            else{
+                cb(null, account)
+            }
+        })
+    },
+    findByEmail: function (email, cb){
+        AccountModel.find({email: email}, function (err, account){
+            if(err){
+                cb(err, null)
+            }
+            else {
+                cb(null, account)
+            }
+        })
+    },
     getAllUsers: function(cb){
         AccountModel.find({}, function(err, users){
             if(err){
@@ -137,5 +160,36 @@ module.exports = {
                 cb(users)
             }
         })
+    },
+    resetPassword : function(email,token,cb){
+        AccountModel.findOne({ email: email }, function(err, user) {
+            if(err){
+                throw err;
+            }
+            if(user){
+                user.resetPasswordToken = token;
+                user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+        
+                user.save(function(err) {
+                    cb(err, token, user);
+                });
+            }
+          });
+    },
+
+    reset: function(token,password,cb){
+        console.log("token"+token)
+        AccountModel.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+            if(user){
+                user.password = password;
+                user.resetPasswordToken = undefined;
+                user.resetPasswordExpires = undefined;
+        
+                user.save(function(err) {
+                    cb(err, user);
+                });   
+            }
+            else cb('done')
+          });
     }
 };

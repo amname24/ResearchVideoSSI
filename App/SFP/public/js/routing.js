@@ -1,9 +1,10 @@
 videoApp.config(function ($stateProvider,$urlRouterProvider) {
     var homeState = {
-        name: "home",
+        name: "requireauth.home",
         url: "/",
         templateUrl: "view/home/home.html",
         controller: "homeCtrl",
+        
     };
     var loginState = {
         name: "login",
@@ -18,36 +19,55 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
         controller: "signupCtrl",
     };
     var searchPageState = {
-        name: "home.searchPage",
+        name: "requireauth.home.searchPage",
         url: "home/search",
         templateUrl: "view/search/search.html",
         controller: "searchCtrl",
     };
     var videoPlayerState = {
-        name :"home.videoPlayer",
+        name :"requireauth.home.videoPlayer",
         url: "home/player",
         templateUrl: "view/search/player.html",
         controller: "videoPlayerCtrl",
     }
     var historyPageState = {
-        name: "home.historyPage",
+        name: "requireauth.home.historyPage",
         url: "home/history",
         templateUrl: "view/search/history.html",
         controller: "historyCtrl",
     };
     var playlistState = {
-        name: "home.playlist",
+        name: "requireauth.home.playlist",
         url: "home/playlist",
         templateUrl: "view/playlist/playlist.html",
         controller:"playlistCtrl",
     };
     var adminPageState =  {
-        name: "admin",
+        name: "requireauth.admin",
         url: "/admin",
         templateUrl: "view/admin/admin-home.html",
         controller: "adminCtrl",
     }
-
+    var NotFound = {
+        name: "404",
+        url: "/404",
+        templateUrl: "view/404.html",
+    }
+    var resetPassword = {
+        name: "resetpassword",
+        url: "/reset/:resettoken",
+        templateUrl: "view/resetPassword/resetPassword.html",
+        controller: "resetPasswordCtrl",
+    };
+    var sendEmailPage = {
+        name: "sendEmail",
+        url: "/sendEmail",
+        templateUrl: "view/resetPassword/sendEmail.html",
+        controller: "resetPasswordCtrl", 
+    }  
+    $stateProvider.state({
+        name: "requireauth",
+    })
     $stateProvider.state(homeState);
     $stateProvider.state(loginState);
     $stateProvider.state(signinState);
@@ -56,17 +76,24 @@ videoApp.config(function ($stateProvider,$urlRouterProvider) {
     $stateProvider.state(historyPageState);
     $stateProvider.state(playlistState);
     $stateProvider.state(adminPageState);
+    $stateProvider.state(resetPassword);
+    $stateProvider.state(sendEmailPage);
+    $stateProvider.state(NotFound);
     $urlRouterProvider.otherwise("/");
 })
 
-angular.module('videoApp').run(['$cookies', '$location','loginService', function ($cookies,$location,loginService) {
+angular.module('videoApp').run(['$cookies', '$location','$transitions','loginService', function ($cookies,$location,  $transitions,loginService) {
+    $transitions.onBefore({to: 'requireauth.**'}, function (trans) {
+        var token = $cookies.get('token');
+        console.log(token);
+         loginService.verify(token,function(res){
+            if (!res.data.success) {
+                console.log("NO authentification: "+ JSON.stringify(res))
+                $location.path('/login');
+                return trans.router.stateService.target('login');
+            }
+            else return true;
+        })
+    });
+}]);
 
-    var token = $cookies.get('token');
-    console.log(token);
-    loginService.verify(token,function(res){
-        if (!res.data.success) {
-            $location.path('/login');
-        }
-    })
-
-  }]);

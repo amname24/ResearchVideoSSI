@@ -2,7 +2,6 @@ var mongoose = require("mongoose");
 var uuidv4 = require("uuid/v4");
 // var bcrypt = require("bcrypt");
 
-
 var Schema = mongoose.Schema;
 
 mongoose.connect('mongodb://localhost/video', function (err) {
@@ -65,15 +64,17 @@ module.exports = {
                     description: video.description,
                     site :video.site
                 });
-                nouveau.save(function(err,resp){
-                    if(err){
-                        console.log("problème creation video in the BD ");
-                        console.error();
-                    } else{
-                        console.log("a new video is created in the BD ");
-                        cb(resp,true);
-                    }
-                });
+                if(nouveau.video_id)
+                    nouveau.save(function(err,resp){
+                        if(err){
+                            console.log("problème creation video in the BD ");
+                            console.error();
+                        } else{
+                            console.log("a new video is created in the BD ");
+                            cb(resp,true);
+                        }
+                    });
+                else console.log("Error : No video_id in my video while addVideo")
             }
             else{
                 VideoModel.findOne({

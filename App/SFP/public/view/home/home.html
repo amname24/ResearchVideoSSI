@@ -1,47 +1,48 @@
-<div data-ng-init="load()" ng-controller = "homeCtrl">
+<div data-ng-init="load()" ng-controller="homeCtrl">
     <div class="sidenav" ng-if="logged">
         <ul>
             <li ng-bind="username"></li>
             <li ng-bind="email"></li>
             <li ng-if="isAdmin()"><a>admin</a></li>
-            <li><a>forgetPassord</a></li>
-            <li><a href="#login">logout</a></li>
+            <li><a data-ui-sref="sendEmail" class="data-link">Change Password</a></li>
+            <li><a data-ui-sref="login" class="data-link" data-ng-click="logout()">Logout</a></li>
         </ul>
-        <div class="panel panel-default " id ="playlists">
+        <div class="panel panel-default " id="playlists">
             <div class="panel-heading">
-                <h4 class="panel-title" >
-                <button class="btn btn-primary-outline" type="button" data-toggle="collapse" data-target="#collapseFour" >
-                    <span class="glyphicon glyphicon-music">   
-                    Playlists 
-                </button>
-                <span class="pull-right center">
-                    <button type="button" class="btn icon-btn btn-success" data-toggle="modal" data-target="#exampleModal"><span class="glyphicon btn-glyphicon glyphicon-plus"></span></button>
-                </span>
+                <h4 class="panel-title">
+                    <button class="btn btn-primary-outline" type="button" data-toggle="collapse" data-target="#collapseFour">
+                        <span class="glyphicon glyphicon-music">
+                            Playlists
+                    </button>
+                    <span class="pull-right center">
+                        <button type="button" class="btn icon-btn btn-success" data-toggle="modal" data-target="#exampleModal"><span
+                                class="glyphicon btn-glyphicon glyphicon-plus"></span></button>
+                    </span>
                 </h4>
             </div>
             <div id="collapseFour" class="panel-collapse collapse">
                 <div class="list-group">
-                <div ng-repeat="playlist in playlists" class="list-group-item clearfix itemplaylist" ng-click="viewPlaylist(playlist)" >
-                    <div >
-                        <span class="glyphicon glyphicon-file "></span>
-                        {{playlist.name}}
-                        <!-- <span class="badge badge-default badge-pill">14</span> -->
+                    <div ng-repeat="playlist in playlists" class="list-group-item clearfix itemplaylist" ng-click="viewPlaylist(playlist)">
+                        <div>
+                            <span class="glyphicon glyphicon-file "></span>
+                            {{playlist.name}}
+                            <!-- <span class="badge badge-default badge-pill">14</span> -->
+                        </div>
+                        <span class="pull-right">
+                            <button class="btn btn-xs btn-warning" ng-click="deletePlaylist(playlist)">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </span>
                     </div>
-                    <span class="pull-right">
-                        <button class="btn btn-xs btn-warning" ng-click="deletePlaylist(playlist)">
-                        <span class="glyphicon glyphicon-trash"></span>
-                        </button>
-                    </span>
-                </div>
                 </div>
             </div>
         </div>
     </div>
 
-	<div class="container">
-        <div class="row" >
-            <div class ="container">
-                <form ng-if="logged" ng-controller = "homeCtrl" class="navbar-form" role="search" ng-submit="search()">
+    <div class="container">
+        <div class="row">
+            <div class="container">
+                <form ng-if="logged" ng-controller="homeCtrl" class="navbar-form" role="search" ng-submit="search()">
                     <div class="input-group add-on">
                         <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" ng-model="searchInput"
                             type="text">
@@ -58,44 +59,48 @@
                 </form>
                 <button class="btn btn-primary history" ng-click="history()">History</button>
             </div>
-		<ui-view></ui-view>
-	</div>
-</div>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New Playlist</h5>
+            <ui-view></ui-view>
         </div>
-        <div class="modal-body">
-            <input class="form-control" id="text" placeholder="name of the new playlist" ng-model="nameNewPlaylist"></input>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="savePlaylist()">save playlist</button>
-        </div>
-      </div>
     </div>
-  </div>
-  <div class="modal fade" id="exampleModalAddPlayList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Add video to Playlist</h5>
-            </div>
-            <div class="modal-body">
-                <input class="form-control" type="text" placeholder="Search.." ng-model="playlist.name" />
-                <!-- simply change col-xs-3 to span3 -->
-                <div class="list-group">
-                    <div data-dismiss="modal" ng-click="addSelectedVideoToPlaylist(playlist)" class="list-group-item list-group-item-action itemplaylistadd" ng-repeat="playlist in playlists | filter:playlist ">
-                        {{playlist.name}}
-                    </div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New Playlist</h5>
+                </div>
+                <div class="modal-body">
+                    <input class="form-control" id="text" placeholder="name of the new playlist" ng-model="nameNewPlaylist"></input>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="savePlaylist()">save
+                        playlist</button>
                 </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <!-- <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="savePlaylist()">save change</button> -->
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
+    <div class="modal fade" id="exampleModalAddPlayList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add video to Playlist</h5>
+                </div>
+                <div class="modal-body">
+                    <input class="form-control" type="text" placeholder="Search.." ng-model="playlist.name" />
+                    <!-- simply change col-xs-3 to span3 -->
+                    <div class="list-group">
+                        <div data-dismiss="modal" ng-click="addSelectedVideoToPlaylist(playlist)" class="list-group-item list-group-item-action itemplaylistadd"
+                            ng-repeat="playlist in playlists | filter:playlist ">
+                            {{playlist.name}}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="savePlaylist()">save change</button> -->
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,5 +1,6 @@
 
-videoApp.controller('homeCtrl', ['playlistService','videoService','loginService','$http', '$rootScope','$scope', '$cookies','$location',function (playlistService,videoService,loginService,$http,$rootScope, $scope, $cookies, $location) {
+videoApp.controller('homeCtrl', ['playlistService','videoService','authService','$http', '$rootScope','$scope', '$cookies','$location',
+                        function (playlistService,videoService,authService,$http,$rootScope, $scope, $cookies, $location) {
     
     $scope.sites = [{
         siteName: 'Youtube',
@@ -33,7 +34,14 @@ videoApp.controller('homeCtrl', ['playlistService','videoService','loginService'
         $scope.getPlaylists();
     }
     $scope.addSelectedVideoToPlaylist = function(playlist){
-        videoService.addVideo($rootScope.selectedVideo,function (response) {
+        var video = {
+            name : $rootScope.selectedVideo.name,
+            video_id : $rootScope.selectedVideo.videoId,
+            thumbnailUrl: $rootScope.selectedVideo.thumbnailUrl,
+            description: $rootScope.selectedVideo.description,
+            site :$rootScope.selectedVideo.site
+        }
+        videoService.addVideo(video,function (response) {
             if (response.success) {
                 playlistService.addVideoToPlaylist(response.video,playlist,function (res) {
                     if (res.success) {
@@ -44,7 +52,11 @@ videoApp.controller('homeCtrl', ['playlistService','videoService','loginService'
     })
     }
     $scope.isAdmin = function(){
-        return false;
+        // authService.verifyAdmin(function(resp){
+        //     if(resp.auth)  console.log(resp);
+            
+        // })
+        // return false;
     }
     $scope.history=function(){
         window.location.href = "https://localhost:8090/#!/home/history";
@@ -85,5 +97,11 @@ videoApp.controller('homeCtrl', ['playlistService','videoService','loginService'
             }
         })
     }
-
+    $scope.logout = function(){
+        $cookies.remove('token');
+        $cookies.remove('username');
+        $cookies.remove('email');
+        $cookies.remove('userId');
+        $location.path('/login');
+    }
 }]);

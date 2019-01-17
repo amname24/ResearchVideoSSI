@@ -1,102 +1,100 @@
-videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$cookies','adminService', 'encryptService', '$window', '$scope', function ($http, $mdDialog, $cookies, adminService, encryptService, $window, $scope) {
-    this.loadUsers = function () {
-        // table = document.getElementById('data-table')
-        $scope.selectedAccount
-        $http.get('/admin/getAllUsers').then(function (res) {
-            console.log(res.data);
-            $scope.users = res.data
+videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$cookies', 'authService', 'adminService', 'encryptService', '$window', '$scope',
+    function ($http, $mdDialog, $cookies, authService, adminService, encryptService, $window, $scope) {
+        this.loadUsers = function () {
+            authService.verifyAdmin(function (resp) {
+                if (resp.auth) {
+                    $http.get('/admin/getAllUsers').then(function (res) {
+                        console.log(res.data);
+                        $scope.users = res.data
+                        return $scope.users
+                    })
+                }
+            })
 
-            return $scope.users
-        })
 
-    }
-
-    $scope.users = this.loadUsers()
-    $scope.verifyAdmin = function () {
-        console.log('verify');
-        var token = $cookies.get('token')
-        console.log(token);
-        var req = {
-            token: token
         }
-        
-        $http.post('user/adminVerify', req).then(function (res) {
-            console.log(res.data);
-        });
-    }
-    $scope.editDialog = function (user) {
-        $scope.selectedAccount = user
-        console.log($scope.selectedAccount);
+        $scope.users = this.loadUsers()
 
-        $mdDialog.show({
-            controller: DialogController,
-            templateUrl: 'editAccount.tmpl.html',
-            parent: angular.element(document.body),
-            isolateScope: false,
-            locals: {
-                users: $scope.users,
-                selectedAccount: $scope.selectedAccount
-            },
-            clickOutsideToClose: true,
-        }).then(function (res) {
-            if (res) {
-                var confirm = $mdDialog.alert()
-                    .clickOutsideToClose(true)
-                    .title('Confirmation Dialog')
-                    .textContent('Successfully updated')
-                    .ok('Got it!')
-                    .multiple(true)
-                $mdDialog.show(confirm)
-                $scope.users = res
+        $scope.editDialog = function (user) {
+            authService.verifyAdmin(function (resp) {
+                if (resp.auth) {
+                    $scope.selectedAccount = user
+                    console.log($scope.selectedAccount);
 
-            }
-        })
+                    $mdDialog.show({
+                        controller: DialogController,
+                        templateUrl: 'editAccount.tmpl.html',
+                        parent: angular.element(document.body),
+                        isolateScope: false,
+                        locals: {
+                            users: $scope.users,
+                            selectedAccount: $scope.selectedAccount
+                        },
+                        clickOutsideToClose: true,
+                    }).then(function (res) {
+                        if (res) {
+                            var confirm = $mdDialog.alert()
+                                .clickOutsideToClose(true)
+                                .title('Confirmation Dialog')
+                                .textContent('Successfully updated')
+                                .ok('Got it!')
+                                .multiple(true)
+                            $mdDialog.show(confirm)
+                            $scope.users = res
 
-    }
+                        }
+                    })
+                }
+            })
 
-    $scope.create = function (ev) {
-        var hashPw
-        encryptService.encrypt($scope.Password, function (res) {
-            console.log(res);
-            hashPw = res
-        })
 
-        if (hashPw != null) {
-            var newUser = {
-                name: $scope.Name,
-                email: $scope.Email,
-                password: hashPw,
-                role: $scope.roleSelected,
-                status: $scope.statusSelected
-            }
+        }
 
-            adminService.createAccount(newUser, function (resp) {
-                if (resp) {
-                    jQuery("#myModal").modal("hide");
-                    var confirm = $mdDialog.alert()
-                        .clickOutsideToClose(true)
-                        .title('Confirmation Dialog')
-                        .textContent('New account has been successfully created')
-                        .ok('Got it!')
-                        .targetEvent(ev)
-                        .multiple(true)
-                    $mdDialog.show(confirm).then(function (res) {
+        $scope.create = function (ev) {
+            var hashPw
+            encryptService.encrypt($scope.Password, function (res) {
+                console.log(res);
+                hashPw = res
+            })
+
+            if (hashPw != null) {
+                var newUser = {
+                    name: $scope.Name,
+                    email: $scope.Email,
+                    password: hashPw,
+                    role: $scope.roleSelected,
+                    status: $scope.statusSelected
+                }
+
+                adminService.createAccount(newUser, function (resp) {
+                    if (resp) {
                         $scope.users.push(resp)
-                        console.log($scope.users);
-                        window.location.reload()
-                    });
-                } else
-                    $window.alert("cette adresse email est deja utilisée pour un autre compte !");
-            });
+                        jQuery("#myModal").modal("hide");
+                        var confirm = $mdDialog.alert()
+                            .clickOutsideToClose(true)
+                            .title('Confirmation Dialog')
+                            .textContent('New account has been successfully created')
+                            .ok('Got it!')
+                            .targetEvent(ev)
+                            .multiple(true)
+                        $mdDialog.show(confirm).then(function (res) {
+
+                            console.log($scope.users);
+                            // window.location.reload()
+                        });
+                    } else
+                        $window.alert("cette adresse email est deja utilisée pour un autre compte !");
+                });
+            }
+
+
         }
 
 
     }
+]);
 
-
-}]);
-
-function DialogController($scope, $mdDialog, users, selectedAccount, adminService) {
+function DialogController($scope, $mdDialog, users, selectedAccount, adminService, authService) {
     $scope.selectedAccount = selectedAccount
     $scope.hide = function () {
         $mdDialog.hide();
@@ -110,23 +108,26 @@ function DialogController($scope, $mdDialog, users, selectedAccount, adminServic
         $mdDialog.hide(answer);
     };
     $scope.update = function () {
-        if ($scope.selectedAccount.role_id != $scope.roleSelected ||
-            $scope.selectedAccount.status != $scope.statusSelected) {
+        authService.verifyAdmin(function (resp) {
+            if (resp.auth) {
+                if ($scope.selectedAccount.role_id != $scope.roleSelected ||
+                    $scope.selectedAccount.status != $scope.statusSelected) {
 
-            var accountToUpdate = users.find(x => x._id == $scope.selectedAccount._id)
-            console.log('account found', accountToUpdate);
-            accountToUpdate.role_id = $scope.roleSelected
-            accountToUpdate.status = $scope.statusSelected
+                    var accountToUpdate = users.find(x => x._id == $scope.selectedAccount._id)
+                    console.log('account found', accountToUpdate);
+                    accountToUpdate.role_id = $scope.roleSelected
+                    accountToUpdate.status = $scope.statusSelected
 
-            adminService.updateAccount(accountToUpdate, function (res) {
-                accountToUpdate = res
-                $mdDialog.hide(users)
+                    adminService.updateAccount(accountToUpdate, function (res) {
+                        accountToUpdate = res
+                        $mdDialog.hide(users)
 
-            })
-        } else {
-            $mdDialog.hide()
-        }
-
+                    })
+                } else {
+                    $mdDialog.hide()
+                }
+            }
+        })
 
     }
 }
