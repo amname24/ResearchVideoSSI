@@ -271,15 +271,7 @@ app.post('/playlist/video/add', (req, res) => {
   });
 })
 
-// app.post('/user/sendEmail', (req, res)=>{
-//   axios.post('http://localhost:8091/user/sendEmail', {
-//     email: req.body.email,
-//   }).then(function (response) {
-//     res.send(response.data);
-//   }).catch(function (error) {
-//     res.send(false);
-//   });
-// })
+
 app.post('/user/sendEmail',(req, res)=>{
   axios.post('http://localhost:8091/forgot', {
     email: req.body.email,

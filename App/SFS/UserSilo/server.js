@@ -7,9 +7,9 @@ var jwt = require('jsonwebtoken');
 var Cookies = require('cookies');
 var async = require("async");
 var crypto = require("crypto");
-var bcrypt = require('bcrypt-nodejs');
+// var bcrypt = require('bcrypt-nodejs');
 var nodemailer = require("nodemailer");
-var sgTransport = require('nodemailer-sendgrid-transport');
+// var sgTransport = require('nodemailer-sendgrid-transport');
 const yaml = require('js-yaml');
 var app = express();
 
@@ -58,12 +58,9 @@ app.post('/register', function (req, res) {
 });
 const RSA_PRIVATE_KEY = fs.readFileSync('./config/private.pem');
 app.post('/login', function (req, res) {
-  console.log(req.body)
-
   var email = req.body.email
   var password = req.body.password
   userRepository.findByEmail(email, function (err, userFound) {
-    console.log(userFound.status, userFound.password);
 
     if (err) return res.send({
       success: false,
@@ -81,7 +78,7 @@ app.post('/login', function (req, res) {
         email: userFound.email
       }, RSA_PRIVATE_KEY, {
         // algorithm: 'RS256',
-        expiresIn: 120
+        expiresIn: 86400
       });
       return res.send({
         success: true,

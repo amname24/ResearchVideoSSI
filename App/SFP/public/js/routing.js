@@ -85,6 +85,8 @@ videoApp.config(function ($stateProvider, $urlRouterProvider) {
 videoApp.run(['$cookies', '$location','$transitions','authService', function ($cookies,$location,  $transitions,authService) {
     $transitions.onBefore({to: 'requireauth.**'}, function (trans,state) {
         authService.verify(function (resp) {
+            console.log(resp);
+            
             if (!resp.auth) {
                 console.log("NO authentification: "+ JSON.stringify(resp))
                 $location.path('/login');
