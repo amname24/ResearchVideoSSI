@@ -1,11 +1,11 @@
 <div data-ng-controller="playlistCtrl" data-ng-init="load()">
     <div class="row search-result" id="resultContent">
-        <div class="col-md-4" ng-repeat="video in videos">
-            <button type="button" class="btn icon-btn btn-success" data-toggle="modal" data-target="#exampleModalAddPlayList" ng-click="selectVideo(video)"><span class="glyphicon btn-glyphicon glyphicon-plus"></span></button>
-            <div class="thumbnail" ng-click="playVideo(video)">
-                <img src="{{video.thumbnailUrl}}" alt="Lights" style="width:100%">
+        <div class="col-md-4" ng-repeat="object in objects">
+            <button type="button" class="btn icon-btn btn-danger" data-toggle="modal" ng-click="deletVideo(object)"><span class="glyphicon btn-glyphicon glyphicon-remove"></span></button>
+            <div class="thumbnail" ng-click="playVideo(object.video)">
+                <img src="{{object.video.thumbnailUrl}}" alt="Lights" style="width:100%">
                 <div class="caption">
-                    <span style="display:block;text-overflow: ellipsis;width: 100%;overflow: hidden; white-space: nowrap;">{{video.name}}</span>
+                    <span style="display:block;text-overflow: ellipsis;width: 100%;overflow: hidden; white-space: nowrap;">{{object.video.name}}</span>
                 </div>
             </div>
         </div>

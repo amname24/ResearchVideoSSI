@@ -19,7 +19,6 @@ videoApp.controller('homeCtrl', ['playlistService','videoService','authService',
     $scope.viewPlaylist = function(playlist){
         if(!$scope.delete)
         {
-            console.log("here")
             $rootScope.playlistSelected = playlist;
             window.location.href = "https://localhost:8090/#!/home/playlist?name="+playlist.name;
         }

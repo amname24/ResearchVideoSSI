@@ -239,10 +239,10 @@ app.get('/playlist/:user_id',function(req,res){
 })
 app.get('/playlist/videos/:playlist_id',function(req,res){
   var playlist_id = req.params.playlist_id 
-  videoRepository.findAllvideosOfPlaylist(playlist_id ,function(success,videos){
+  videoRepository.findAllvideosOfPlaylist(playlist_id ,function(success,objects){
     if(success){
-      console.log('here : '+JSON.stringify(videos))
-      res.send({success : true,videos : videos});
+      console.log('here : '+JSON.stringify(objects))
+      res.send({success : true,objects : objects});
     }
     else res.send({success : false});
   })
@@ -252,6 +252,15 @@ app.get('/history/:user_id',function(req,res){
   videoRepository.findAllVideosHistory(user_id,function(success,videos){
     if(success){
       res.send({success : true,histories : videos});
+    }
+    else res.send({success : false});
+  })
+})
+app.post('/playlist/videos/delete',function(req,res){
+  var playlistvideo = req.body.playlistvideo;
+  videoRepository.deletevideofromplaylist(playlistvideo,function(success){
+    if(success){
+      res.send({success : true});
     }
     else res.send({success : false});
   })

@@ -73,7 +73,15 @@ videoApp.factory('videoService', ['$http', function ($http) {
     }
     server.playlistvideos = function(playlist,cb){
         $http.get('/playlist/videos/'+playlist._id).then(function(res){
-            cb(res.data.videos)
+            cb(res.data.objects)
+        });
+    }
+    server.deletevideo= function(playlistvideo,cb){
+        var req ={
+            playlistvideo : playlistvideo
+        } 
+        $http.post('/playlist/videos/delete',req).then(function(res){
+            cb(res.data.success)
         });
     }
     return server;

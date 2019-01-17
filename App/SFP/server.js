@@ -288,6 +288,14 @@ app.post('/reset/:token',(req, res) => {
       res.send(false);
     });
 });
+app.post('/playlist/videos/delete',(req,res)=>{
+  var playlistvideo = req.body.playlistvideo
+  axios.post('http://localhost:8092/playlist/videos/delete',{playlistvideo: playlistvideo }).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+})
 
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
