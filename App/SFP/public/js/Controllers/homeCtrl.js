@@ -36,12 +36,13 @@ videoApp.controller('homeCtrl', ['playlistService', 'videoService', 'authService
         })
     }
     $scope.addSelectedVideoToPlaylist = function (playlist) {
+        
         var video = {
             name : $rootScope.selectedVideo.name,
-            video_id : $rootScope.selectedVideo.videoId,
+            video_id : $rootScope.selectedVideo.video_id,
             thumbnailUrl: $rootScope.selectedVideo.thumbnailUrl,
             description: $rootScope.selectedVideo.description,
-            site :$rootScope.selectedVideo.site
+            site : $rootScope.selectedVideo.site
         }
         videoService.addVideo(video, function (response) {
             if (response.success) {

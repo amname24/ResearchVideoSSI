@@ -2,7 +2,14 @@ videoApp.controller('searchCtrl', ['videoService', '$http', '$scope', '$location
     var searchInput;
     var site;
     $scope.selectVideo = function(video){
-        $rootScope.selectedVideo = video;
+        var videoselected = {
+            name : video.name,
+            video_id : video.videoId,
+            thumbnailUrl: video.thumbnailUrl,
+            description: video.description,
+            site : video.site
+        }
+        $rootScope.selectedVideo = videoselected;
     }
     $scope.load = function () {
         searchInput = $location.search().input
@@ -26,6 +33,15 @@ videoApp.controller('searchCtrl', ['videoService', '$http', '$scope', '$location
     }
     $scope.playVideo = function (video) {
         $rootScope.searched = true;
+        $rootScope.fromplaylist=false;
+        var videoselected = {
+            name : video.name,
+            video_id : video.videoId,
+            thumbnailUrl: video.thumbnailUrl,
+            description: video.description,
+            site : video.site
+        }
+        $rootScope.selectedVideo = videoselected;
         window.location.href = "https://localhost:8090/#!/home/player?site=" + video.site + "&videoId=" + video.videoId
     }
     $rootScope.$on("$locationChangeStart", function(event, next, current) { 
