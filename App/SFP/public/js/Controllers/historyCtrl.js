@@ -1,7 +1,8 @@
-videoApp.controller('historyCtrl', ['videoService','$http','$rootScope', '$scope', '$cookies','$location',function (videoService,$http,$rootScope, $scope, $cookies, $location) {
+videoApp.controller('historyCtrl', ['videoService','$http','$rootScope', '$scope', '$cookies','$location',function (videoService,$http,$rootScope, $scope, $cookies, $location,blockUI) {
     $rootScope.userId;
     $scope.histories = [];
     $scope.load = function(){
+        blockUI.start('Loding...');
         videoService.historysearch($rootScope.userId,function(histories){
             if(histories){
                 $scope.histories = histories;
@@ -10,6 +11,7 @@ videoApp.controller('historyCtrl', ['videoService','$http','$rootScope', '$scope
                   })
                 console.log(histories);
             }
+            blockUI.stop();
         });
     }
     $scope.convertDate= function (inputFormat) {

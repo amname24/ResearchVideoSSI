@@ -20,7 +20,13 @@ $scope.load = function(){
    }
 }
 $scope.playVideo = function (video) {
+    $rootScope.videos = [];
+    $scope.objects.forEach(object => {
+        $rootScope.videos.push(object.video);
+    });
     $rootScope.searched = false;
+    $rootScope.fromplaylist = true;
+    $rootScope.selectedVideo = video;
     console.log(video);
     window.location.href = "https://localhost:8090/#!/home/player?site=" + video.site + "&videoId=" + video.video_id ;
 }

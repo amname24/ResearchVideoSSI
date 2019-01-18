@@ -5,7 +5,8 @@
             <source ng-if="videoId != ''  &&  site!=''" ng-src="https://localhost:8090/video/{{site}}/{{videoId}}" type="video/mp4">
         </video>
     </div>
-
+    <button ng-if="fromplaylist" class="btn btn-primary" ng-click="goPrev()">Previous</button>
+    <button ng-if="fromplaylist" class="btn btn-primary" ng-click="goNext()">Next</button>
     <div class="description">
         <h3>{{video.name}}</h3>
         <hr>

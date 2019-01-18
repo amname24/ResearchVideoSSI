@@ -38,4 +38,28 @@ videoApp.controller('videoPlayerCtrl', ['videoService', '$sce','$rootScope', '$s
             );
         });
     }
+    $scope.selectVideo = function(){
+        console.log("$rootScope.selectedVideo: "+JSON.stringify($rootScope.selectedVideo))
+    }
+    $scope.goPrev = function(){
+        var currentindex = $rootScope.videos.indexOf($rootScope.selectedVideo);
+        if(currentindex>0){
+            var prevVIdeo = $rootScope.videos[currentindex - 1];
+            $rootScope.selectedVideo = prevVIdeo;
+            window.location.href = "https://localhost:8090/#!/home/player?site=" + prevVIdeo.site + "&videoId=" + prevVIdeo.video_id ;
+        }
+        console.log(currentindex);
+    }
+    $scope.goNext = function(){
+        var currentindex = $rootScope.videos.indexOf($rootScope.selectedVideo);
+        if(currentindex<$rootScope.videos.length){
+            var nextVIdeo = $rootScope.videos[currentindex + 1];
+            $rootScope.selectedVideo = nextVIdeo;
+            window.location.href = "https://localhost:8090/#!/home/player?site=" + nextVIdeo.site + "&videoId=" + nextVIdeo.video_id ;
+        }
+        console.log(currentindex);
+    }
+    $rootScope.$on("$locationChangeStart", function(event, next, current) { 
+        $scope.loadVideo()
+    });
 }]);

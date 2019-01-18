@@ -1,5 +1,5 @@
 <div data-ng-controller="historyCtrl" data-ng-init="load()">
-    <div class="row search-result" id="resultContent">
+    <div  class="row search-result" id="resultContent">
         <div class="col-md-4" ng-repeat="history in histories">
             <div class="thumbnail" ng-click="playVideo(history.video)">
                 <img ng-if="history.video.thumbnailUrl" src="{{history.video.thumbnailUrl}}" alt="Lights" style="width:100%">
