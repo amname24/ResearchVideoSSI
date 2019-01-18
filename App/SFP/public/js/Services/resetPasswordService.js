@@ -7,7 +7,8 @@ videoApp.factory('resetPasswordService', ['$http', '$cookies', '$stateParams', f
             email: email
         }
         $http.post('user/sendEmail', req).then(function(res){
-            console.log(res.data);
+            // console.log(res.data);
+            cb(res.data)
         })
     }
     server.reset = function(password,cb){

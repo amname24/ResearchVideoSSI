@@ -15,7 +15,7 @@ videoApp.controller('historyCtrl', ['videoService','$http','$rootScope', '$scope
     $scope.convertDate= function (inputFormat) {
         function pad(s) { return (s < 10) ? '0' + s : s; }
         var d = new Date(inputFormat);
-        return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/') + " à "+ [pad(d.getHours()), pad(d.getMinutes())].join(':');
+        return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/') + " at "+ [pad(d.getHours()), pad(d.getMinutes())].join(':');
       }
     $scope.playVideo = function (video) {
         $rootScope.searched = false;

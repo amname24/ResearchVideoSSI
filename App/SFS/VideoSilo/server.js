@@ -82,189 +82,224 @@ app.post('/videos/vimeo/search', function (req, res) {
 
 app.get('/video/youtube/:videoId', function (req, res) {
   var videoId = req.params.videoId
-  console.log("video silo get info", req.params);
-  youtubedl("http://www.youtube.com/watch?v=" + videoId, // Optional arguments passed to youtube-dl.
-    ['--format=18'],
+  if (videoId)
+    youtubedl("http://www.youtube.com/watch?v=" + videoId, // Optional arguments passed to youtube-dl.
+      ['--format=18'],
 
-    // start will be sent as a range header
-    {
-      cwd: __dirname
-    }).pipe(res)
+      // start will be sent as a range header
+      {
+        cwd: __dirname
+      }).pipe(res)
 });
 
 app.get('/video/vimeo/:videoId', function (req, res) {
   var videoId = req.params.videoId
-  vidl("https://vimeo.com/" + videoId).pipe(res);
+  if (videoId)
+    vidl("https://vimeo.com/" + videoId).pipe(res);
 })
 app.post('/video/vimeo/getVideoInfo', function (req, res) {
   var videoId = req.body.videoId
   console.log('vimeo Silo', videoId);
-  request.get("https://api.vimeo.com/videos/" + videoId + "?access_token=d3266a4b836cde5f096ae6abe8de8c79", function (err, response, body) {
-    var item = JSON.parse(response.body)
-    video = {
-      videoId: videoId,
-      site: 'vimeo',
-      name: item.name,
-      watchUrl: "https://vimeo.com/",
-      embedUrl: "https://player.vimeo.com/video/",
-      thumbnailUrl: item.pictures[0].link,
-      description: item.description
-    }
-    console.log('videoInfo', video);
+  if (videoId)
+    request.get("https://api.vimeo.com/videos/" + videoId + "?access_token=d3266a4b836cde5f096ae6abe8de8c79", function (err, response, body) {
+      var item = JSON.parse(response.body)
+      video = {
+        videoId: videoId,
+        site: 'vimeo',
+        name: item.name,
+        watchUrl: "https://vimeo.com/",
+        embedUrl: "https://player.vimeo.com/video/",
+        thumbnailUrl: item.pictures[0].link,
+        description: item.description
+      }
+      console.log('videoInfo', video);
 
-    res.send({
-      data: video,
-      success: true,
+      res.send({
+        data: video,
+        success: true,
+      })
     })
-  })
 })
 
 app.post('/video/youtube/getVideoInfo', function (req, res) {
   var videoId = req.body.videoId
-  console.log('youtube Silo', videoId);
+  console.log('youtube getvideoinfo', videoId);
+  
+  if (videoId)
+    request.get("https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=" + videoId + "&key=AIzaSyA670YSi6pImC-35QYETHPxp_rHItuNCvc", function (err, response, body) {
+      var items = JSON.parse(response.body).items
+      video = {
+        videoId: videoId,
+        site: 'youtube',
+        name: items[0].snippet.title,
+        embedUrl: "https://www.youtube.com/embed/",
+        watchUrl: "https://www.youtube.com//watch?v=",
+        thumbnailUrl: items[0].snippet.thumbnails.default.url,
+        description: items[0].snippet.description
+      }
+      console.log('videoInfo', video);
 
-  request.get("https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=" + videoId + "&key=AIzaSyA670YSi6pImC-35QYETHPxp_rHItuNCvc", function (err, response, body) {
-    var items = JSON.parse(response.body).items
-    video = {
-      videoId: videoId,
-      site: 'youtube',
-      name: items[0].snippet.title,
-      embedUrl: "https://www.youtube.com/embed/",
-      watchUrl: "https://www.youtube.com//watch?v=",
-      thumbnailUrl: items[0].snippet.thumbnails.default.url,
-      description: items[0].snippet.description
-    }
-    console.log('videoInfo', video);
-
-    res.send({
-      data: video,
-      success: true,
+      res.send({
+        data: video,
+        success: true,
+      })
     })
-  })
 })
 app.post('/video/history', function (req, res) {
   console.log("History in SFS Video");
-  var history ={
+  var history = {
     _id: uuidv4(),
-    user_id:req.body.user_id,
-    video_id : req.body.video_id
+    user_id: req.body.user_id,
+    video_id: req.body.video_id
   };
-    videoRepository.addHistory(history,function(videoHistory){
-      if(videoHistory)
-      {
-        res.send({success : true,history : videoHistory});
-        console.log("new history created :"+videoHistory);
-      }
-      else res.send({success : false});
+  videoRepository.addHistory(history, function (videoHistory) {
+    if (videoHistory) {
+      res.send({
+        success: true,
+        history: videoHistory
+      });
+      console.log("new history created :" + videoHistory);
+    } else res.send({
+      success: false
     });
+  });
 })
 
 app.post('/video/add', function (req, res) {
   console.log("add video in SFS Video");
   var video = {
-    _id : uuidv4(),
-    name : req.body.name,
-    video_id : req.body.video_id,
+    _id: uuidv4(),
+    name: req.body.name,
+    video_id: req.body.video_id,
     thumbnailUrl: req.body.thumbnailUrl,
     description: req.body.description,
-    site :req.body.site
+    site: req.body.site
   };
-    videoRepository.addVideo(video,function(resp,sucess){
-      if(sucess)
-      {
-        res.send({success : true,video :resp});
-        console.log("new video created "+resp);
-      }
-      else res.send({success : false});
+  videoRepository.addVideo(video, function (resp, sucess) {
+    if (sucess) {
+      res.send({
+        success: true,
+        video: resp
+      });
+      console.log("new video created " + resp);
+    } else res.send({
+      success: false
     });
+  });
 })
 
 app.post('/playlist/add', function (req, res) {
   console.log("add playlist in SFS Video");
   var playlist = {
-    _id : uuidv4(),
-    name : req.body.name,
+    _id: uuidv4(),
+    name: req.body.name,
     user_id: req.body.user_id
   };
-    videoRepository.addPlayList(playlist,function(playlist,success){
-      if(success)
-      {
-        res.send({success : true,playlist : playlist});
-        console.log("new playlist created :"+playlist);
-      }
-      else if(playlist)
-      {
-        res.send({success : true});
-        console.log("playlist exist");
-      }
-      else res.send({success : false});
+  videoRepository.addPlayList(playlist, function (playlist, success) {
+    if (success) {
+      res.send({
+        success: true,
+        playlist: playlist
+      });
+      console.log("new playlist created :" + playlist);
+    } else if (playlist) {
+      res.send({
+        success: true
+      });
+      console.log("playlist exist");
+    } else res.send({
+      success: false
     });
+  });
 })
 app.post('/playlist/delete', function (req, res) {
   console.log("delete playlist in SFS Video");
-    videoRepository.deletePlayList(req.body.playlist,function(playlist,sucess){
-      if(sucess)
-      {
-        res.send({success : true,playlist : playlist});
-        console.log(" playlist deleted :"+JSON.stringify(playlist));
-      }
-      else res.send({success : false});
+  videoRepository.deletePlayList(req.body.playlist, function (playlist, sucess) {
+    if (sucess) {
+      res.send({
+        success: true,
+        playlist: playlist
+      });
+      console.log(" playlist deleted :" + JSON.stringify(playlist));
+    } else res.send({
+      success: false
     });
+  });
 })
-app.post('/playlist/video/add',function (req, res) {
+app.post('/playlist/video/add', function (req, res) {
   var vidoPlaylist = {
-    _id : uuidv4(),
-    video_id : req.body.video._id,
+    _id: uuidv4(),
+    video_id: req.body.video._id,
     playlist_id: req.body.playlist._id
   };
   console.log("add p vido to playlist in SFS Video");
-    videoRepository.addVideoToPlayList(vidoPlaylist,function(playlistvideo,sucess){
-      if(sucess)
-      {
-        res.send({success : true,playlistvideo : playlistvideo});
-        console.log(" playlistvideo :"+JSON.stringify(playlistvideo));
-      }
-      else res.send({success : false});
+  videoRepository.addVideoToPlayList(vidoPlaylist, function (playlistvideo, sucess) {
+    if (sucess) {
+      res.send({
+        success: true,
+        playlistvideo: playlistvideo
+      });
+      console.log(" playlistvideo :" + JSON.stringify(playlistvideo));
+    } else res.send({
+      success: false
     });
+  });
 })
 
-app.get('/playlist/:user_id',function(req,res){
-  var user_id = req.params.user_id 
-  videoRepository.findAllPlaylists(user_id,function(success,playlists){
-    if(success){
-      res.send({success : true,playlists : playlists});
-    }
-    else res.send({success : false});
+app.get('/playlist/:user_id', function (req, res) {
+  var user_id = req.params.user_id
+  videoRepository.findAllPlaylists(user_id, function (success, playlists) {
+    if (success) {
+      res.send({
+        success: true,
+        playlists: playlists
+      });
+    } else res.send({
+      success: false
+    });
   })
 })
-app.get('/playlist/videos/:playlist_id',function(req,res){
-  var playlist_id = req.params.playlist_id 
-  videoRepository.findAllvideosOfPlaylist(playlist_id ,function(success,objects){
-    if(success){
-      console.log('here : '+JSON.stringify(objects))
-      res.send({success : true,objects : objects});
-    }
-    else res.send({success : false});
+app.get('/playlist/videos/:playlist_id', function (req, res) {
+  var playlist_id = req.params.playlist_id
+  videoRepository.findAllvideosOfPlaylist(playlist_id, function (success, objects) {
+    if (success) {
+      console.log('here : ' + JSON.stringify(objects))
+      res.send({
+        success: true,
+        objects: objects
+      });
+    } else res.send({
+      success: false
+    });
   })
 })
-app.get('/history/:user_id',function(req,res){
-  var user_id = req.params.user_id 
-  videoRepository.findAllVideosHistory(user_id,function(success,videos){
-    if(success){
-      res.send({success : true,histories : videos});
-    }
-    else res.send({success : false});
+app.get('/history/:user_id', function (req, res) {
+  var user_id = req.params.user_id
+  videoRepository.findAllVideosHistory(user_id, function (success, videos) {
+    if (success) {
+      res.send({
+        success: true,
+        histories: videos
+      });
+    } else res.send({
+      success: false
+    });
   })
 })
-app.post('/playlist/videos/delete',function(req,res){
+app.post('/playlist/videos/delete', function (req, res) {
   var playlistvideo = req.body.playlistvideo;
-  videoRepository.deletevideofromplaylist(playlistvideo,function(success){
-    if(success){
-      res.send({success : true});
-    }
-    else res.send({success : false});
+  videoRepository.deletevideofromplaylist(playlistvideo, function (success) {
+    if (success) {
+      res.send({
+        success: true
+      });
+    } else res.send({
+      success: false
+    });
   })
 })
+
+
 
 app.listen(port, function () {
   console.log("Port: ", port);

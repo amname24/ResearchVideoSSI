@@ -6,7 +6,10 @@ videoApp.controller('resetPasswordCtrl', ['$http', 'resetPasswordService', 'encr
 
 
             resetPasswordService.sendEmail($scope.email, function (res) {
-                console.log(res);
+                console.log(res.success);
+                if(!res.success)
+                    $window.alert('Email not found')
+                else $window.alert('An email to reset password is already sent to your email')
 
             })
         }
