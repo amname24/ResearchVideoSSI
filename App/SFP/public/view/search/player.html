@@ -1,8 +1,8 @@
 <div ng-controller="videoPlayerCtrl" data-ng-init="loadVideo()" class="video-player">
     <button type="button" class="btn icon-btn btn-success" data-toggle="modal" data-target="#exampleModalAddPlayList" ng-click="selectVideo()"><span class="glyphicon btn-glyphicon glyphicon-plus"></span></button>
-    <div>
+    <div class="player">
         <video id="videoPlayer" width="640" height="360" controls>
-            <source ng-if="videoId != ''  &&  site!=''" ng-src="https://localhost:8090/video/{{site}}/{{videoId}}" type="video/mp4">
+            <source src="" type="video/mp4">
         </video>
     </div>
     <button ng-if="fromplaylist" class="btn btn-primary" ng-click="goPrev()">Previous</button>

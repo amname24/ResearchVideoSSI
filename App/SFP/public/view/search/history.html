@@ -1,5 +1,27 @@
 <div data-ng-controller="historyCtrl" data-ng-init="load()">
-    <div  class="row search-result" id="resultContent">
+    <div class="row search-result" id="resultContent">
+
+        <!-- <div class="col-sm-12" ng-repeat="history in histories">
+            <div class="media" ng-click="playVideo(history.video)">
+                <div class="media-left media-top">
+                    <img ng-if="history.video.thumbnailUrl" src="{{history.video.thumbnailUrl}}" alt="Lights" class="media-object"
+                        style="width:300px">
+                </div>
+                <div class="media-body">
+                    <h3 class="media-heading">{{history.video.name}}</h3>
+                    <p><span style="font-style: italic">Watched: {{convertDate(history.date_watched)}}
+                        </span></p>
+                        <p style="overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 6; ">
+                                {{history.video.description}}
+                        </p>
+                </div>
+            </div>
+        </div> -->
+
         <div class="col-md-4" ng-repeat="history in histories">
             <div class="thumbnail" ng-click="playVideo(history.video)">
                 <img ng-if="history.video.thumbnailUrl" src="{{history.video.thumbnailUrl}}" alt="Lights" style="width:100%">
@@ -11,4 +33,21 @@
         </div>
     </div>
 </div>
-</div>
+<style>
+.media{
+    margin-bottom: 10px;
+}
+.media .media-heading {
+    color: white;
+    margin: 5px;
+}
+.media-top{
+    padding: 5px;
+}
+.media:hover{
+    cursor: pointer;
+    border: 1px solid #23659b;
+    border-style: inset;
+    background-color: #23659b;
+}
+</style>

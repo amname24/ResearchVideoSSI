@@ -1,8 +1,8 @@
-videoApp.controller('historyCtrl', ['videoService','$http','$rootScope', '$scope', '$cookies','$location',function (videoService,$http,$rootScope, $scope, $cookies, $location,blockUI) {
+videoApp.controller('historyCtrl', ['videoService','$http','$rootScope', '$scope', '$cookies','$location','blockUI', function (videoService,$http,$rootScope, $scope, $cookies, $location,blockUI) {
     $rootScope.userId;
     $scope.histories = [];
     $scope.load = function(){
-        blockUI.start('Loding...');
+        blockUI.start('Loading...');
         videoService.historysearch($rootScope.userId,function(histories){
             if(histories){
                 $scope.histories = histories;
@@ -17,7 +17,7 @@ videoApp.controller('historyCtrl', ['videoService','$http','$rootScope', '$scope
     $scope.convertDate= function (inputFormat) {
         function pad(s) { return (s < 10) ? '0' + s : s; }
         var d = new Date(inputFormat);
-        return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/') + " à "+ [pad(d.getHours()), pad(d.getMinutes())].join(':');
+        return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/') + " at "+ [pad(d.getHours()), pad(d.getMinutes())].join(':');
       }
     $scope.playVideo = function (video) {
         $rootScope.searched = false;

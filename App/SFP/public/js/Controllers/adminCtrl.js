@@ -1,11 +1,22 @@
-videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$state', 'authService', 'adminService', 'encryptService', '$window', '$scope',
-    function ($http, $mdDialog, $state, authService, adminService, encryptService, $window, $scope) {
+videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$state', 'authService', 'adminService', 'encryptService', 'playlistService', '$window', '$scope',
+    function ($http, $mdDialog, $state, authService, adminService, encryptService, playlistService, $window, $scope) {
+        var self = this
+        this.getPlaylists = function(user){
+            playlistService.playlists(user._id, function(res){
+                user.playlist = res.length
+            })
+        }
         this.loadUsers = function () {
             authService.verifyAdmin(function (resp) {
                 if (resp.auth) {
                     $http.get('/admin/getAllUsers').then(function (res) {
                         console.log(res.data);
                         $scope.users = res.data
+                        $scope.users.forEach(user => {
+                            user.playlist = self.getPlaylists(user)
+                        });
+                        console.log($scope.users);
+                        
                         return $scope.users
                     })
                 }
@@ -17,7 +28,7 @@ videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$state', 'authService',
 
         }
         $scope.users = this.loadUsers()
-
+        
         $scope.editDialog = function (user) {
             authService.verifyAdmin(function (resp) {
                 if (resp.auth) {
