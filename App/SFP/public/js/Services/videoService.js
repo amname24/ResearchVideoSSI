@@ -87,5 +87,12 @@ videoApp.factory('videoService', ['$http', function ($http) {
             cb(res.data.success)
         });
     }
+    server.historyNumber = function(userId, cb){
+        $http.get('/history_number/'+userId).then(function(res){
+            console.log(res.data);
+            
+            cb(res.data)
+        });
+    }
     return server;
 }])

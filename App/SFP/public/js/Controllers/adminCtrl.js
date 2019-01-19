@@ -7,10 +7,8 @@ videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$state', 'authService',
             })
         }
         this.getVideosWatched = function (user) {
-            videoService.historysearch(user._id, function (res) {
-                if(res.histories )
-                user.videosWatched = res.histories.length 
-                else user.videosWatched = 0
+            videoService.historyNumber(user._id, function (res) {
+                user.videosWatched = res.histories_numb
             })
         }
         this.loadUsers = function () {
@@ -23,7 +21,6 @@ videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$state', 'authService',
                             self.getPlaylists(user)
                             self.getVideosWatched(user)
                         });
-                        console.log($scope.users);
 
                         return $scope.users
                     })
@@ -63,12 +60,11 @@ videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$state', 'authService',
                             $mdDialog.show(confirm)
                             $scope.users = res
 
+
                         }
                     })
                 }
             })
-
-
         }
 
         $scope.create = function (ev) {

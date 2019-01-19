@@ -168,6 +168,15 @@ app.get(`/history/:user_id`, (req, res) => {
   });
 });
 
+app.get(`/history_number/:user_id`, (req, res) => {
+  var user_id = req.params.user_id
+  axios.get('http://localhost:8092/history_number/' + user_id).then(function (response) {
+    res.send(response.data);
+  }).catch(function (error) {
+    res.send(false);
+  });
+});
+
 app.get('/admin/getAllUsers', (req, res) => {
   axios.get('http://localhost:8091/admin/getAllUsers').then(function (response) {
     res.json(response.data);
@@ -202,7 +211,7 @@ app.get('/admin/getAllUsers', (req, res) => {
   });
 })
 
-app.post('/admin/account/create', (req, res) => {
+app.post('/admin/account/create', (req, res) => {  
   axios.post('http://localhost:8091/admin/createAccount', {
     name: req.body.name,
     email: req.body.email,

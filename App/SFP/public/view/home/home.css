@@ -1,43 +1,53 @@
-.history{
+.history {
     float: right;
     margin-bottom: 10px;
 }
-#playlists a:hover{
-    color:black 
+
+#playlists a:hover {
+    color: black
 }
-#playlists a{
-    color:black 
+
+#playlists a {
+    color: black
 }
+
 .itemplaylistadd {
     cursor: pointer;
 }
-.itemplaylistadd:hover{
+
+.itemplaylistadd:hover {
     background-color: darkgrey
 }
-.itemplaylist:hover{
+
+.itemplaylist:hover {
     background-color: darkgray;
-    text-decoration : none;
+    text-decoration: none;
     cursor: pointer;
 }
 
 .sidenav li a {
     font-size: 1.2em !important;
     margin-top: 10px;
-  
+
     padding-left: 0px !important;
 }
- .list-group li {
-     list-style: none;
- }
- html,
-body {
-  overflow-x: hidden; /* Prevent scroll on narrow devices */
+
+.list-group li {
+    list-style: none;
 }
+
+html,
 body {
-  padding-top: 70px;
-  padding-bottom: 50px;
+    overflow-x: hidden;
+    /* Prevent scroll on narrow devices */
 }
-.search-panel{
+
+body {
+    padding-top: 70px;
+    padding-bottom: 50px;
+}
+
+.search-panel {
     position: relative;
     top: 0;
     display: inline-block;
@@ -45,8 +55,9 @@ body {
 }
 
 .list-group-item.profile {
-    background: rgb(238, 152, 30);
+    background: rgb(175, 135, 4);
 }
-.list-group-item{
-    border-color: rgb(238, 152, 30, 0.2);
+
+.list-group-item {
+    border-color: rgb(175, 135, 4, 0.3);
 }

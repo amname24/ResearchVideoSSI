@@ -214,6 +214,7 @@ module.exports = {
                 cb(true,histories);  
           });
     },
+    
     findAllPlaylists: function(user_id,cb){
         PlayListModel.find({user_id:user_id}, function(err, playlists) {
             if(err){
@@ -224,6 +225,7 @@ module.exports = {
                 cb(true,playlists);  
           });
     },
+    
     findAllVideosHistory : function(user_id,cb){
         HistoryModel.find({user_id:user_id}, function(err, histories) {
             if(err){
@@ -292,6 +294,7 @@ module.exports = {
             }
         })
     },
+   
     findPlaylistById : function(playlist_id,cb){
         console.log(playlist_id);
         

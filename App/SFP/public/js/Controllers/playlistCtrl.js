@@ -9,7 +9,8 @@ videoApp.controller('playlistCtrl', ['videoService','$http','$rootScope', '$scop
     }
 $scope.load = function(){
     $scope.objects=[];
-//    console.log($rootScope.playlistSelected)
+console.log($location.search().name);
+
     var playlist_name = $location.search().name
     var userId = $cookies.get('userId')
     console.log(playlist_name);

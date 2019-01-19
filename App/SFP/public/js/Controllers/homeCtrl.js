@@ -48,6 +48,8 @@ videoApp.controller('homeCtrl', ['playlistService', 'videoService', 'authService
             if (response.success) {
                 playlistService.addVideoToPlaylist(response.video, playlist, function (res) {
                     if (res.success) {
+                        console.log(playlist);
+                        
                         console.log("video added to playlist " + JSON.stringify(res.playlistvideo));
                     }
                 })

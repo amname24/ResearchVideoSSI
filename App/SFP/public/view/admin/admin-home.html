@@ -1,9 +1,12 @@
 <div ng-controller="adminCtrl">
-    <nav class="navbar navbar-default">
-        <div class="container">
+     <nav class="navbar navbar-fixed-top navbar-inverse">
+        <div class="container-fluid">
             <div class="navbar-header">
-                <p class="navbar-brand">Admin Application</p>
+                <img class="navbar-brand" style=" width: 180px; margin-left: 25px; height: 60px;"
+                data-ui-sref="requireauth.home" data-ui-sref-active="active" src="assets/images/youvimstreamblack.PNG">
+            
             </div>
+           
             <!--navbar-brand -->
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -40,7 +43,7 @@
                     <td>
                         {{user.last_login}}
                     </td>
-                    <td ng-init='0'>{{user.videosWatched}}</td>
+                    <td data-ng-init='0'>{{user.videosWatched}}</td>
                     <td>{{user.playlist}}</td>
                 </tr>
             </tbody>

@@ -289,6 +289,20 @@ app.get('/history/:user_id', function (req, res) {
     });
   })
 })
+
+app.get('/history_number/:user_id', function (req, res) {
+  var user_id = req.params.user_id
+  videoRepository.findAllHistory(user_id, function (success, histories) {
+    if (success) {
+      res.send({
+        success: true,
+        histories_numb: histories.length
+      });
+    } else res.send({
+      success: false
+    });
+  })
+})
 app.post('/playlist/videos/delete', function (req, res) {
   var playlistvideo = req.body.playlistvideo;
   videoRepository.deletevideofromplaylist(playlistvideo, function (success) {

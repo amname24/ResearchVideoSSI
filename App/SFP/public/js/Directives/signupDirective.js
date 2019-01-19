@@ -25,8 +25,10 @@ videoApp.directive("checkLength",function(){
     require : "ngModel",
     link: function (scope, element, attributes, modelVal) {
       var mesureStrength = function () {
-        var p = scope.$eval(attributes.ngModel);      
-        return p.length >= 8 ;
+        var p = scope.$eval(attributes.ngModel); 
+        if(p)     
+          return p.length >= 8 ;
+        else return true;
       }
       scope.$watch(mesureStrength, function (isValid) {
             modelVal.$setValidity("checkLength",isValid);

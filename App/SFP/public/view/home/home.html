@@ -2,13 +2,12 @@
     <nav class="navbar navbar-fixed-top navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">YouVimStream</a>
+                <img class="navbar-brand" style=" width: 180px; margin-left: 25px; height: 60px;"
+                data-ui-sref="requireauth.home" data-ui-sref-active="active" src="assets/images/youvimstreamblack.PNG">
+
+                <!-- <a class="navbar-brand" >YouVimStream</a> -->
             </div>
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-
-            </ul>
-
+         
             <form ng-controller="homeCtrl" class="navbar-form navbar-left" role="search" ng-submit="search()">
                 <div class="input-group add-on">
                     <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" ng-model="searchInput"

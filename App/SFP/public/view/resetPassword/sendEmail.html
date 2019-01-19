@@ -1,7 +1,10 @@
 <div ng-controller="resetPasswordCtrl">
-	<form class="login-form">
-		<input type="email" name="email" placeholder="Email" class="form-control" required ng-model="email" />
-        <a ng-click="sendEmail()">Send password reset email</a>
-        
+	<form class="login-form" name="resetForm">
+		<img src="assets/images/youvimstreamblack.PNG">
+		<div class="form-group" ng-class="{'has-error': resetForm.email.$dirty && resetForm.email.$invalid}">
+				<input type="email" name="email" placeholder="Email" class="form-control information" required ng-model="email" />
+		</div>
+        <input type="submit" name="login" value="Send password reset email" class=" button button-block boutonLogin" ng-click="sendEmail()"/>
+		<a ui-sref="login">Go back to login?</a>
 	</form>
 </div>

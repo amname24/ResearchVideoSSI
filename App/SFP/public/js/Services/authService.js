@@ -9,7 +9,6 @@ videoApp.factory('authService', ['$http', '$cookies', '$state', function ($http,
             token: token,
             userId: userId
         }
-        console.log('req', req);
 
         $http.post('user/verifyAdmin', req).then(function (res) {
             console.log(res.data);
