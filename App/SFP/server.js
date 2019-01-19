@@ -215,9 +215,13 @@ app.post('/admin/account/create', (req, res) => {
     res.send(false);
   });
 })
-app.get('/playlist/videos/:playlist_id', (req, res) => {
-  var playlist_id = req.params.playlist_id
-  axios.get('http://localhost:8092/playlist/videos/' + playlist_id).then(function (response) {
+app.get('/playlist/videos/:playlist_name/:userId', (req, res) => {
+  var playlist_name = req.params.playlist_name
+  var userId = req.params.userId
+  
+  axios.get('http://localhost:8092/playlist/videos/' + playlist_name+'/'+userId).then(function (response) {
+    console.log(response.data);
+    
     res.send(response.data);
   }).catch(function (error) {
     res.send(false);

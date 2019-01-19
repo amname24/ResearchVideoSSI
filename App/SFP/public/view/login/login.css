@@ -1,11 +1,4 @@
-body {
-    background-color: #123c69;
-    
-    /* background-repeat: no-repeat; */
-    /* background-size: cover; */
-    /* background-position: center;
-    background-image: url(../../assets/images/background.jpg); */
-}
+
 
 .title {
     margin-top: 10%;
@@ -35,7 +28,7 @@ body {
 
 .login-form>p,
 a {
-    color: #fff;
+    /* color: #fff; */
     font-weight: 300;
     font-size: 20px;
 }

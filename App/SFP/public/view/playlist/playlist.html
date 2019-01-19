@@ -1,5 +1,6 @@
 <div data-ng-controller="playlistCtrl" data-ng-init="load()">
     <div class="row search-result" id="resultContent">
+        
         <div class="col-md-4" ng-repeat="object in objects">
             <button type="button" class="btn icon-btn btn-danger" data-toggle="modal" ng-click="deletVideo(object)"><span class="glyphicon btn-glyphicon glyphicon-remove"></span></button>
             <div class="thumbnail" ng-click="playVideo(object.video)">
@@ -9,5 +10,6 @@
                 </div>
             </div>
         </div>
+        <h1 ng-show="!objects[0]">This playlist is empty. Let's try to add a video</h1>
     </div>
 </div>

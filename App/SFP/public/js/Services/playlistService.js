@@ -26,6 +26,8 @@ videoApp.factory('playlistService', ['$http', function ($http) {
 
     server.playlists = function(user_id,cb){
         $http.get('/playlist/'+user_id).then(function(res){
+            console.log(res.data);
+            
             cb(res.data.playlists)
         });
     }

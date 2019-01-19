@@ -82,20 +82,24 @@ videoApp.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/");
 })
 
-videoApp.run(['$cookies', '$location','$transitions','authService', function ($cookies,$location,  $transitions,authService) {
-    $transitions.onBefore({to: 'requireauth.**'}, function (trans,state) {
+videoApp.run(['$state', '$location','$transitions','authService', function ($state,$location,  $transitions,authService) {
+    $transitions.onBefore({to: 'requireauth.**'}, function (trans) {
         authService.verify(function (resp) {
             console.log(resp);
             
             if (!resp.auth) {
                 console.log("NO authentification: "+ JSON.stringify(resp))
-                $location.path('/login');
+                // $location.path('/login');                
+                $state.go('login')
                 return trans.router.stateService.target('login');
-            } else {
-                if (state.name =='requireauth.admin') {
+            } else {                
+                if (trans.to().name =='requireauth.admin') {
                     authService.verifyAdmin(function (res) {
-                        if (res.auth) {}
-                        else $location.path('/404');
+                        if (res.auth) { console.log(res);
+                        }
+                        else {
+                            $state.go('404')
+                        } 
                     })
                 } else return true;
             }

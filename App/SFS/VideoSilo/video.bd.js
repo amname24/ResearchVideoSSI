@@ -254,7 +254,47 @@ module.exports = {
             }
           });
     },
-    findAllvideosOfPlaylist : function(playlist_id,cb){
+    findAllvideosOfPlaylist : function(playlist_name, userId, cb){
+        PlayListModel.findOne({user_id: userId, name: playlist_name}, function(err, playlist){
+            if(err){
+                cb(err, null)
+            }
+            if(playlist){
+                console.log('playlist found', playlist);
+                
+                PlayListVideoModel.find({playlist_id: playlist._id}, function(error, videos){
+                    if(error){
+                        cb(error, null)
+                    }
+                    if(videos){
+                        console.log('videos', videos);
+                        var objects = [];
+                        videos.forEach(function(playlistvideo) {
+                            VideoModel.findOne({_id:playlistvideo.video_id},function(err,video){
+                                if(err)
+                                    console.log("this video not found"+err);
+                                else {
+                                    var object = {
+                                        video : video,
+                                        playlistvideo : playlistvideo
+                                    }
+                                    objects.push(object)
+                                    if (objects.length === videos.length) {
+                                        // we are done! :D
+                                        console.log(objects);
+                                        cb(null,objects)
+                                    }
+                                }
+                            })
+                        })
+                    }
+                })
+            }
+        })
+    },
+    findPlaylistById : function(playlist_id,cb){
+        console.log(playlist_id);
+        
         PlayListVideoModel.find({playlist_id:playlist_id}, function(err, playlistvideos) {
             if(err){
                 console.log("problem while getting Playlistesvideos");
@@ -262,6 +302,8 @@ module.exports = {
             }
             else 
             {
+                console.log('else', playlistvideos);
+                
                 var objects = [];
                 playlistvideos.forEach(function(playlistvideo) {
                     VideoModel.findOne({_id:playlistvideo.video_id},function(err,video){

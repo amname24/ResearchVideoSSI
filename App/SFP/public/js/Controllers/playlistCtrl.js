@@ -1,4 +1,4 @@
-videoApp.controller('playlistCtrl', ['videoService','$http','$rootScope', '$scope', '$cookies','$state',function (videoService,$http,$rootScope, $scope, $cookies, $state) {
+videoApp.controller('playlistCtrl', ['videoService','$http','$rootScope', '$scope', '$location','$cookies',function (videoService,$http,$rootScope, $scope, $location, $cookies) {
     $scope.deletVideo = function(object){
         videoService.deletevideo(object.playlistvideo, function (success) {
             if (success) {
@@ -9,12 +9,18 @@ videoApp.controller('playlistCtrl', ['videoService','$http','$rootScope', '$scop
     }
 $scope.load = function(){
     $scope.objects=[];
-   console.log($rootScope.playlistSelected)
-   if($rootScope.playlistSelected){
-        videoService.playlistvideos ($rootScope.playlistSelected, function (objects) {
-            if (objects) {
-                $scope.objects = objects;
-                console.log(objects);
+//    console.log($rootScope.playlistSelected)
+    var playlist_name = $location.search().name
+    var userId = $cookies.get('userId')
+    console.log(playlist_name);
+    
+   if(playlist_name){
+       
+        videoService.playlistvideos (playlist_name, userId, function (res) {
+            console.log(res);
+            
+            if (res.success) {
+                $scope.objects = res.objects;
             }
         })
    }

@@ -1,6 +1,6 @@
-videoApp.controller('homeCtrl', ['playlistService', 'videoService', 'authService', 'accountService',
+videoApp.controller('homeCtrl', ['playlistService', 'videoService', 'authService', 'accountService', 'loginService',
     '$rootScope', '$scope', '$cookies', '$location', 'encryptService', '$mdDialog',
-    function (playlistService, videoService, authService, accountService,
+    function (playlistService, videoService, authService, accountService, loginService,
         $rootScope, $scope, $cookies, $location, encryptService, $mdDialog) {
    
     $scope.sites = [{
@@ -20,8 +20,8 @@ videoApp.controller('homeCtrl', ['playlistService', 'videoService', 'authService
     $scope.viewPlaylist = function(playlist){
         if(!$scope.delete)
         {
-            $rootScope.playlistSelected = playlist;
-            window.location.href = "https://localhost:8090/#!/home/playlist?name="+playlist.name;
+            // $rootScope.playlistSelected = playlist;
+            window.location.href = "https://localhost:8090/#!/home/playlist?name="+playlist.name
         }
     }
     $scope.load = function () {
@@ -85,7 +85,8 @@ videoApp.controller('homeCtrl', ['playlistService', 'videoService', 'authService
         })
     }
     $scope.getPlaylists = function () {
-        playlistService.playlists($rootScope.userId, function (playlists) {
+        var userId = $cookies.get('userId')
+        playlistService.playlists(userId, function (playlists) {
             if (playlists) {
                 $scope.playlists = playlists;
                 $scope.playlists.sort(function (a, b) {
@@ -132,10 +133,6 @@ videoApp.controller('homeCtrl', ['playlistService', 'videoService', 'authService
         })
     }
     $scope.logout = function(){
-        $cookies.remove('token');
-        $cookies.remove('username');
-        $cookies.remove('email');
-        $cookies.remove('userId');
-        $location.path('/login');
+        loginService.logout()
     }
 }]);

@@ -1,5 +1,5 @@
 
-videoApp.factory('loginService', ['$http', function ($http) {
+videoApp.factory('loginService', ['$http', '$cookies', '$location', function ($http, $cookies, $location) {
     var server = {}
     server.login = function(email, password, cb){
         var user = {
@@ -18,6 +18,12 @@ videoApp.factory('loginService', ['$http', function ($http) {
         $http.post('/user/verify',req).then(function(res){
             cb(res) 
         })
+    }
+    server.logout = function (){
+        $cookies.remove('token');
+        $cookies.remove('username');
+        $cookies.remove('email');
+        $cookies.remove('userId');
     }
     return server;
 }])

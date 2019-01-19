@@ -1,9 +1,16 @@
-videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$state', 'authService', 'adminService', 'encryptService', 'playlistService', '$window', '$scope',
-    function ($http, $mdDialog, $state, authService, adminService, encryptService, playlistService, $window, $scope) {
+videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$state', 'authService', 'adminService', 'encryptService', 'playlistService', 'videoService', 'loginService', '$window', '$scope',
+    function ($http, $mdDialog, $state, authService, adminService, encryptService, playlistService, videoService, loginService, $window, $scope) {
         var self = this
-        this.getPlaylists = function(user){
-            playlistService.playlists(user._id, function(res){
+        this.getPlaylists = function (user) {
+            playlistService.playlists(user._id, function (res) {
                 user.playlist = res.length
+            })
+        }
+        this.getVideosWatched = function (user) {
+            videoService.historysearch(user._id, function (res) {
+                if(res.histories )
+                user.videosWatched = res.histories.length 
+                else user.videosWatched = 0
             })
         }
         this.loadUsers = function () {
@@ -13,22 +20,22 @@ videoApp.controller('adminCtrl', ['$http', '$mdDialog', '$state', 'authService',
                         console.log(res.data);
                         $scope.users = res.data
                         $scope.users.forEach(user => {
-                            user.playlist = self.getPlaylists(user)
+                            self.getPlaylists(user)
+                            self.getVideosWatched(user)
                         });
                         console.log($scope.users);
-                        
+
                         return $scope.users
                     })
-                }
-                else {
-                    $state.go('404')
-                }
+                } 
             })
 
 
         }
         $scope.users = this.loadUsers()
-        
+        $scope.logout = function(){
+            loginService.logout()
+        }
         $scope.editDialog = function (user) {
             authService.verifyAdmin(function (resp) {
                 if (resp.auth) {

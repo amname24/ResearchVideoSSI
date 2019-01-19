@@ -24,13 +24,3 @@
     padding-left:15px;
     padding-right:15px;
 }
-.search-panel{
-    position: relative;
-    top: 0;
-    display: inline-block;
-    padding: 3px;
-}
-.search-result{
-    margin-left: 150px;
-    position: relative;
-}

@@ -1,11 +1,11 @@
 <div data-ng-controller="historyCtrl" data-ng-init="load()">
     <div class="row search-result" id="resultContent">
 
-        <!-- <div class="col-sm-12" ng-repeat="history in histories">
+        <div class="col-sm-12" ng-repeat="history in histories">
             <div class="media" ng-click="playVideo(history.video)">
                 <div class="media-left media-top">
                     <img ng-if="history.video.thumbnailUrl" src="{{history.video.thumbnailUrl}}" alt="Lights" class="media-object"
-                        style="width:300px">
+                        style="width:250px">
                 </div>
                 <div class="media-body">
                     <h3 class="media-heading">{{history.video.name}}</h3>
@@ -20,17 +20,9 @@
                         </p>
                 </div>
             </div>
-        </div> -->
-
-        <div class="col-md-4" ng-repeat="history in histories">
-            <div class="thumbnail" ng-click="playVideo(history.video)">
-                <img ng-if="history.video.thumbnailUrl" src="{{history.video.thumbnailUrl}}" alt="Lights" style="width:100%">
-                <div class="caption">
-                    <span style="display:block;text-overflow: ellipsis;width: 100%;overflow: hidden; white-space: nowrap;">{{convertDate(history.date_watched)}}
-                        - {{history.video.name}}</span>
-                </div>
-            </div>
         </div>
+
+    
     </div>
 </div>
 <style>
@@ -38,7 +30,7 @@
     margin-bottom: 10px;
 }
 .media .media-heading {
-    color: white;
+    /* color: white; */
     margin: 5px;
 }
 .media-top{

@@ -43,7 +43,7 @@ videoApp.factory('videoService', ['$http', function ($http) {
         $http.get('/history/'+user_id).then(function(res){
             console.log(res.data);
             
-            cb(res.data.histories)
+            cb(res.data)
         });
     }
 
@@ -71,9 +71,12 @@ videoApp.factory('videoService', ['$http', function ($http) {
             cb(res.data);
         })
     }
-    server.playlistvideos = function(playlist,cb){
-        $http.get('/playlist/videos/'+playlist._id).then(function(res){
-            cb(res.data.objects)
+    server.playlistvideos = function(playlist_name, userId, cb){
+        
+        $http.get('/playlist/videos/'+playlist_name+'/'+userId).then(function(res){
+            console.log(res.data);
+            
+            cb(res.data)
         });
     }
     server.deletevideo= function(playlistvideo,cb){

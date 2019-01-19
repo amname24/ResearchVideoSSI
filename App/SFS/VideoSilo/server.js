@@ -259,10 +259,13 @@ app.get('/playlist/:user_id', function (req, res) {
     });
   })
 })
-app.get('/playlist/videos/:playlist_id', function (req, res) {
-  var playlist_id = req.params.playlist_id
-  videoRepository.findAllvideosOfPlaylist(playlist_id, function (success, objects) {
-    if (success) {
+app.get('/playlist/videos/:playlist_name/:userId', function (req, res) {
+  console.log(req.params);
+  
+  var playlist_name = req.params.playlist_name
+  var userId = req.params.userId
+  videoRepository.findAllvideosOfPlaylist(playlist_name, userId,  function (err, objects) {
+    if (!err) {
       console.log('here : ' + JSON.stringify(objects))
       res.send({
         success: true,
