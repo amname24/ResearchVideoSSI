@@ -1,15 +1,29 @@
-
-
 .main {
     position: absolute;
-    margin-left: 18%; 
+    margin-left: 18%;
     /* width: calc(100% -200px); */
 }
+
 .form-horizontal.login {
     padding: 100px;
     width: 60%;
 }
+
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav a {
+        font-size: 18px;
+    }
+}
+
+.admin-title {
+    margin-bottom: 25px;
+    font-weight: bold;
+    font-size: 2em;
+    letter-spacing: 1px;
+    color: rgb(175, 135, 4);
+    text-transform: uppercase;
 }
