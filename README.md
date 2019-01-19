@@ -1,4 +1,4 @@
-# ResearchVideoSSI
+# ResearchVideoSSI : YouVimStream
 projet en Securité système d'information 
 Objectif : 
 Faire une application web qui permet un utilisateur de se connecter et de chercher des videos sur Youtube et sur Vimeo.
