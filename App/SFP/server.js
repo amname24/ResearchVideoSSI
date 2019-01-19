@@ -4,6 +4,7 @@ var jwt = require('jsonwebtoken');
 const yml = require("js-yaml");
 const https = require("https"),
   fs = require("fs");
+  const ExpressBrute = require("express-brute")
 
 
 const options = {
@@ -22,7 +23,43 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// brute force
+var store = new ExpressBrute.MemoryStore();
 
+var failCallback= function(req, res, next, nextValidRequestDate) {
+  console.log("TOO_MANY_ATTEMPTS");
+  res.send({ success: false, error: "TOO_MANY_ATTEMPTS" });
+}
+var handleStoreError = function(error) {
+  console.log(`handleStoreError: ${error}`);
+  throw {
+    message: error.message,
+    parent: error.parent
+  };
+}
+// no more than x login attempts, 5m, 1h 
+var userBruteforce = new ExpressBrute(store, {
+  freeRetries: 5,
+  minWait: 300000,
+  maxWait: 3600000,
+  failCallback: failCallback,
+  handleStoreError: handleStoreError
+});
+
+// no more than x requests per y per IP, 1h,1h
+var globalBruteforce = new ExpressBrute(store, {
+  freeRetries: 1000,
+  attachResetToRequest: false,
+  refreshTimeoutOnRequest: false,
+  minWait: 3600000,
+  maxWait: 3600000,
+  lifetime: 3600,
+  failCallback: failCallback,
+  handleStoreError: handleStoreError
+});
+
+// global brute force, on all routes
+app.use(globalBruteforce.prevent);
 // const silosConfigPath = "silos.config.yml";
 // try {
 // 	silosConfigTry = yml.safeLoad(fs.readFileSync(path.join(__dirname, silosConfigPath), "utf8"));
@@ -47,7 +84,12 @@ app.post(`/user/register`, (req, res) => {
 
 // const RSA_PRIVATE_KEY = fs.readFileSync('./config/private.pem');
 
-app.post(`/user/login`, (req, res) => {
+app.post(`/user/login`,userBruteforce.getMiddleware({
+  key: function(req, res, next) {
+    // prevent too many attempts for the same email
+    next(req.body.email);
+  }
+}), (req, res) => {
   axios.post('http://localhost:8091/login', {
     email: req.body.email,
     password: req.body.password
@@ -322,6 +364,10 @@ app.post('/playlist/videos/delete',(req,res)=>{
     res.send(false);
   });
 })
+
+
+
+
 var port = 8090;
 https.createServer(options, app).listen(port, function () {
   console.log("Port : " + port);
