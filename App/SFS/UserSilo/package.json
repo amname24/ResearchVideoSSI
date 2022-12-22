@@ -19,7 +19,7 @@
     "fs": "^0.0.1-security",
     "https": "^1.0.0",
     "js-yaml": "^3.12.1",
-    "jsonwebtoken": "^8.4.0",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.4.4",
     "nodemailer": "^5.1.1",
     "nodemailer-sendgrid-transport": "^0.2.0",
